@@ -1,15 +1,15 @@
-#include "./Driver/Driver.hpp"
-#include"common.hpp"
+#include "Driver/Driver.hpp"
+#include "RBTree.hpp"
 #include <fstream>
 
 
 class Garage {
     private:
-        RBTree<tires_s> *tiresT;
-        RBTree<glider_s> *glidersT;
-        RBTree<vehicle_s> *kartsT;
-        RBTree<vehicle_s> *bikesT;
-        RBTree<vehicle_s> *ATVsT;
+        RBTree<partS*> *tiresT;
+        RBTree<partS*> *glidersT;
+        RBTree<Vehicle*> *kartsT;
+        RBTree<Vehicle*> *bikesT;
+        RBTree<Vehicle*> *ATVsT;
         RBTree<Driver*> *driversT;
         std::ifstream playerInput;
         std::ifstream partsInput;
@@ -33,9 +33,10 @@ class Garage {
 
         void readGliders(int qGliders);
 
+        void print();
+
+        // void readDrivers (int& d_tierra, int& d_agua, int& d_aire);
         
-        // void readConductores (int& d_tierra, int& d_agua, int& d_aire);
-        
-        // void printStats (Driver* conductores[], int d_tierra, int d_agua, int d_aire);
+        // void printStats (Driver* Drivers[], int d_tierra, int d_agua, int d_aire);
         
 };

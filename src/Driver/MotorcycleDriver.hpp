@@ -2,11 +2,11 @@
 
 class MotorcycleDriver final : public Driver {
     public:
-        MotorcycleDriver(std::string tag, std::string personaje, tires_s tiresD, glider_s gliderD, vehicle_s vehicleD);
+        MotorcycleDriver(std::string tag, std::string personaje, partS* tiresD, partS* gliderD, Vehicle* vehicleD);
         
         double get_time_land (int distancia);
         
         double get_time_air (int distancia);
         
-        inline vehicle_s getMotorcycle() const {return this->vehicleD;}
+        inline Vehicle* getMotorcycle() const {return this->VehicleD;}
 };

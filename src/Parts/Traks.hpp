@@ -8,7 +8,10 @@ class traks{
         int airDistance;
     public:
         traks (std::string name, int landDistance, int waterDistance, int airDistance)
-            : 
+            : name (name)
+            , landDistance (landDistance)
+            , waterDistance (waterDistance)
+            , airDistance (airDistance)
         {
 
         }

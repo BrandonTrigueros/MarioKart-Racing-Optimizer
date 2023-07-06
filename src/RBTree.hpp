@@ -4,6 +4,15 @@
 #include <iostream>
 #include <string>
 
+#define DECLARE_RULE5(Class, Action)               \
+    Class(const Class &other) = Action;            \
+    Class(Class &&other) = Action;                 \
+    Class &operator=(const Class &other) = Action; \
+    Class &operator=(Class &&other) = Action        \
+
+#define DISABLE_COPY(Class) \
+    DECLARE_RULE5(Class, delete);
+
 enum Color {
     RED,
     BLACK
@@ -20,7 +29,7 @@ class RBTree {
             Node *left, *right, *parent;
 
         public:
-            explicit Node(Type& value, std::string key = value.name, Color color = RED, Node* left = nullptr, Node* right = nullptr, Node* parent = nullptr)
+            explicit Node(Type& value, std::string key, Color color = RED, Node* left = nullptr, Node* right = nullptr, Node* parent = nullptr)
                 : key(key), value(value), color(color), left(left), right(right), parent(parent)
             {}
 
@@ -59,35 +68,35 @@ class RBTree {
                 Node* current = this->root;
                 while (current) {
                     if (*node < *current) {
-                        if (!current.getLeft()) {
-                            current.setLeft(node);
+                        if (!current->getLeft()) {
+                            current->setLeft(node);
                             node->setParent(current);
                             break;
                         }
                         else {
-                            current = current.getLeft();
+                            current = current->getLeft();
                         }
                     }
                     else {
-                        if (!current.getRight()) {
-                            current.setRight(node);
+                        if (!current->getRight()) {
+                            current->setRight(node);
                             node->setParent(current);
                             break;
                         }
                         else {
-                            current = current.getRight();
+                            current = current->getRight();
                         }
                     }
                 }
             }
-            node->setColor(RED);
+            node->setColor(BLACK);
             node->setLeft(nullptr);
             node->setRight(nullptr);
-            this->fixup (node);
+            //this->fixup (node);
         }
 
-        void insertNode(Type& value){
-            Node* node = new Node(value);
+        void insertNode(Type& value, std::string key){
+            Node* node = new Node(value, key);
             this->insertNode(node);
         }
 
@@ -112,24 +121,24 @@ class RBTree {
 
     //     }
 
-        static Node *findMinimum(Node *subtree) {
+        static Node* findMinimum(Node* subtree) {
             if (subtree) {
-                while (subtree->left) {
-                    subtree = subtree->left;
+                while (subtree->getLeft()) {
+                    subtree = subtree->getLeft();
                 }
             }
             return subtree;
         }
 
-        static Node& findNextNodeOrder (Node* current) {
+        static Node& findNextNode(Node* current) {
             Node* original = current;
-            if (current->right) {
-                return RNTree::findMinimum(node->right);
+            if (current->getRight()) {
+                return findMinimum(current->getRight());
             }
             while (current->parent && current == current->parent->right) {
-                current = node->parent;
-                if (!current->parent) {
-                    return = nullptr;
+                current = current->getParent();
+                if (!current->getParent()) {
+                    return nullptr;
                 }
             }
             if (current && current->parent && current == current->parent->left)
@@ -139,6 +148,7 @@ class RBTree {
         }
 
         class Iterator {
+
             private:
                 Node* node;
 
@@ -155,45 +165,42 @@ class RBTree {
 
                 inline std::string getKey() {
                     assert(this->node);
-                    return this->node->key;
+                    return this->node->getKey();
                 }
 
                 inline const std::string getKey() const {
                     assert(this->node);
-                    return this->node->key;
+                    return this->node->getKey;
                 }
 
                 inline Type& getValue()  {
                     assert(this->node);
-                    return this->node->value;
+                    return this->node->getValue;
                 }
 
                 inline const Type& getValue() const {
                     assert(this->node);
-                    return this->node->value;
+                    return this->node->getValue();
                 }
 
                 inline Iterator& operator ++() {
-                    this->node = RBTree::findNextNodeOrder(this->node);
+                    this->node = RBTree::findNextNode(this->node);
                     return *this;
                 }
-
         };
 
         Iterator begin() {
-                return Iterator(this->findMinimum(this->root));
+            return Iterator(this->findMinimum(this->root));
         }
 
         Iterator end(){
-                return Iterator(nullptr);
+            return Iterator(nullptr);
         }
+        Node* getRoot() {return this->root;}
 
     public:
 
         RBTree(const RBTree& other) {           //copy constructor
-            for (Iterator it = other.begin(); it != other.end(); ++it) {
-                this->insertNode(it.getValue());
-            }
         }
 
         RBTree(RBTree&& other){                 //move constructor

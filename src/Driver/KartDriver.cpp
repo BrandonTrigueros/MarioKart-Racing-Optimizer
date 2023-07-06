@@ -1,6 +1,6 @@
 #include "KartDriver.hpp"
 
-KartDriver::KartDriver(std::string tag, std::string personaje, tires_s tiresD, glider_s gliderD, vehicle_s vehicleD)
+KartDriver::KartDriver(std::string tag, std::string personaje, partS* tiresD, partS* gliderD, Vehicle* vehicleD)
     : Driver(tag, personage, tiresD, gliderD, vehicleD)
     {}
 
