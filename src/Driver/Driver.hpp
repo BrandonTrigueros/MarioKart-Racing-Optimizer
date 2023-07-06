@@ -18,7 +18,7 @@ class Driver {
         
         inline std::string getTag() const {return this->tag;}
         inline std::string getpersonage() const {return this->personage;}
-        inline tires_s getWheels() const {return this->tiresD;}
+        inline tires_s getTires() const {return this->tiresD;}
         inline glider_s getGlider() const {return this->gliderD;}
         inline bool getValid() const {return this->valid;}
 };
