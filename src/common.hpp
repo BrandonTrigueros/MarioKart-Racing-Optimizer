@@ -22,3 +22,11 @@ typedef struct glider {
     int waterDrag;
     int airVelocity;
 } glider_s;
+
+
+typedef struct traks{
+    std::string name;
+    int landDistance;
+    int waterDistance;
+    int airDistance;
+} track_s;

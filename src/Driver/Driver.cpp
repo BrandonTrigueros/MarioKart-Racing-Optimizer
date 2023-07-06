@@ -4,13 +4,13 @@ Driver::Driver (std::string tag, std::string personage)
     : tag(tag), personage(personage), valid(false) 
     {}
 
-Driver::Driver(std::string tag, std::string personage, piece_s wheels, piece_s glider, piece_s vehicle)
+Driver::Driver(std::string tag, std::string personage, tires_s tiresD, glider_s gliderD, vehicle_s vehicleD)
     : tag(tag), personage(personage),
-    wheels(wheels), glider(glider), 
-    valid(true), vehicle(vehicle) 
+    tiresD(tiresD), gliderD(gliderD), 
+    valid(true), vehicleD(vehicleD) 
     {}
 
 
 double Driver::get_time_water (int distancia) {
-    return ((0.7 * distancia) * vehicle.velocity);
+    return ((0.7 * distancia) * vehicleD.baseSpeed);
 }

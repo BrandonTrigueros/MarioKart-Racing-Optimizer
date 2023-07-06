@@ -1,8 +1,5 @@
 #include "common.hpp"
 
-#include <cstring>
-
-
 class ArgumentHandler
 {
 private:

@@ -1,5 +1,5 @@
-
 #include "Garage.hpp"
+#include "RBTree.hpp"
 Garage::Garage ()
     {}
 
@@ -24,7 +24,7 @@ void Garage::run(bool useConsole, std::string filePlayersName, std::string fileP
         partsInput.open(filePartsName);
     }
     this->readParts();
-    
+
 }
 
 void Garage::readParts ()
@@ -113,6 +113,7 @@ void Garage::readGliders(int qGliders)
         std::getline(this->partsInput, glider.name, ',');
         this->partsInput >> glider.landDrag >> glider.waterDrag >> glider.airVelocity;
         // esto funciona asi?------------------------------------------------------------------------------
+        
         this->glidersT->insertNode(glider);
     }
 }

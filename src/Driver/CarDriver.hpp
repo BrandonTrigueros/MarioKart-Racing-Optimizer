@@ -1,4 +1,3 @@
-
 #include "Driver.hpp"
 
 class CarDriver final : public Driver {
@@ -10,5 +9,5 @@ class CarDriver final : public Driver {
         
         virtual double get_time_air (int distancia);
 
-        inline vehicle getCar() const {return this->vehicleD;}
+        inline vehicle_s getCar() const {return this->vehicleD;}
 };
