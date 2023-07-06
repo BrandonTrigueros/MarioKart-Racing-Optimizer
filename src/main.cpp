@@ -3,9 +3,9 @@
 
 #include <iostream>
 int main (int argc, char* argv[]){
-    ArgumentHandler* manager = new ArgumentHandler(argc, argv);
+    ArgumentHandler* argHandler = new ArgumentHandler(argc, argv);
     Garage* garage = new Garage();
-    
+    garage->run(argHandler->getUseConsole(),argHandler->getPlayersFileName(), argHandler->getPartsFileName());
 
 
     return 0;
