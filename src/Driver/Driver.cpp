@@ -4,7 +4,7 @@ Driver::Driver (std::string tag, std::string personage)
     : tag(tag), personage(personage), valid(false) 
     {}
 
-Driver::Driver(std::string tag, std::string personage, part_s wheels, part_s glider, part_s vehicle)
+Driver::Driver(std::string tag, std::string personage, piece_s wheels, piece_s glider, piece_s vehicle)
     : tag(tag), personage(personage),
     wheels(wheels), glider(glider), 
     valid(true), vehicle(vehicle) 

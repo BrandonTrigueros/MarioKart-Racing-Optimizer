@@ -1,6 +1,6 @@
 #include "CarDriver.hpp"
 
-CarDriver::CarDriver(std::string tag, std::string personaje, part_s wheels, part_s glider, part_s vehicle)
+CarDriver::CarDriver(std::string tag, std::string personaje, tires_s tiresD, glider_s gliderD, vehicle_s vehicleD);
 : Driver(tag, personaje, wheels, glider, vehicle){}
 
 double CarDriver::get_time_land (int distancia) {

@@ -1,7 +1,7 @@
 #include "MotorcycleDriver.hpp"
 
 
-MotorcycleDriver::MotorcycleDriver(std::string tag, std::string personaje, part_s wheels, part_s glider, part_s vehicle)
+MotorcycleDriver::MotorcycleDriver(std::string tag, std::string personaje, piece_s wheels, piece_s glider, piece_s vehicle)
         : Driver(tag, personaje, wheels, glider, vehicle){}
 
 double MotorcycleDriver::get_time_land (int distancia) {
