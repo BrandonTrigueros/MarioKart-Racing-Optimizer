@@ -5,8 +5,8 @@ class ArgumentHandler
 private:
 
     bool useConsole = false;
-    std::string playersFileName = "input/players.csv";
-    std::string partsFileName = "input/pieces.csv";
+    std::string playersFileName = "../input/players.csv";
+    std::string partsFileName = "../input/pieces.csv";
 
 public:
     ArgumentHandler(int args, char* argsv[]);

@@ -8,7 +8,7 @@ ArgumentHandler::ArgumentHandler(int argc, char* argv[])
         if(argv[arg] == std::string("-f") || argv[arg] == std::string("--file"))
         {
             this->partsFileName = argv[++arg];
-            this->playersFileName = argv[++arg];
+            // this->playersFileName = argv[++arg];
         }
         if(argv[arg] == std::string("-c") || argv[arg] == std::string("--console"))
         {

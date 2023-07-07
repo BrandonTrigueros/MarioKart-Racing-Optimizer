@@ -23,15 +23,15 @@ class Garage {
 
         void readParts ();
 
-        void readKarts(int qKarts);
+        RBTree<Vehicle*>* readVehicleTree(int qKarts);
         
-        void readTires(int qTires);
+        RBTree<partS*>* readPartTree(int qTires);
 
-        void readBikes(int qBikes);
+        // void readBikes(int qBikes);
 
-        void readATVs(int qATVs);
+        // void readATVs(int qATVs);
 
-        void readGliders(int qGliders);
+        // void readGliders(int qGliders);
 
         void print();
 

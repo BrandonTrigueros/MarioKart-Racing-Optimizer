@@ -1,4 +1,5 @@
 #include "Garage.hpp"
+// #include "../input/pieces.csv"
 Garage::Garage ()
     {}
 
@@ -20,117 +21,148 @@ void Garage::run(bool useConsole, std::string filePlayersName, std::string fileP
     else
     {
         playerInput.open(filePlayersName);
-        partsInput.open(filePartsName);
+        this->partsInput.open(filePartsName);
+        
+        this->readParts();
     }
-    this->readParts();
 
-
+    partsInput.close();
     this->print();
     
 }
 
 void Garage::print(){
-    std::cout << this->ATVsT->getRoot()->getKey() << std::endl;
+    std::cout <<"/*/"<< this->kartsT->getRoot()->getKey() << std::endl;
 }
 
 void Garage::readParts ()
 {
-    std::string partType;
     int qPieces = 0;
-    for (int category = 0; category < 6; ++category)
+    std::string partType = "vacio";
+    for (int category = 0; category < 5; ++category)
     {
-        this->partsInput >> partType >> qPieces;
+
+        // this->partsInput.ignore(11, ',');
+        std::getline(this->partsInput, partType, ',');
+        this->partsInput>> qPieces;
+        if (this->partsInput.good()){}
+            // std::cout << "*"<<partType << " , "<< qPieces << std::endl;
         if (partType == std::string("Karts"))
         {
-            this->readKarts(qPieces);
+            std::cout << "si kart***";
+            this->kartsT = this->readVehicleTree(qPieces);
         }
         else if (partType == std::string("Tires"))
         {
-            this->readTires(qPieces);
+            std::cout << "si llantas***";
+            this->tiresT = this->readPartTree(qPieces);
         }
         else if (partType == std::string("Bikes"))
         {
-            this->readBikes(qPieces);
+            std::cout << "si motos***";
+            this->bikesT = this->readVehicleTree(qPieces);
         }
         else if (partType == std::string("ATVs"))
         {
-            this->readATVs(qPieces);
+            std::cout << "si atvs***";
+            this->ATVsT = this->readVehicleTree(qPieces);
         }
         else if (partType == std::string("Gliders"))
         {
-            this->readGliders(qPieces);
+            std::cout << "si Gliders***";
+
+            this->glidersT = this->readPartTree(qPieces);
         }
+        this->partsInput.ignore (10, '\n');
+        std::cout <<std::endl;
     }
 }
 
-void Garage::readKarts (int qKarts)
+RBTree<Vehicle*>* Garage::readVehicleTree (int qKarts)
 {
-    this->kartsT = new RBTree<Vehicle*>();
+    RBTree<Vehicle*>* VehicleT = new RBTree<Vehicle*>();
     for (int iPieces = 0; iPieces < qKarts; ++iPieces)
-    {   
-        
+    {
         std::string name;
-        int aceleration, baseSpeed;
+        double aceleration = 0;
+        int baseSpeed = 0;
         std::getline(this->partsInput, name, ',');
-        this->partsInput >> aceleration >> baseSpeed;
+        this->partsInput >> aceleration; 
+        this->partsInput.ignore(1, ',');
+        this->partsInput >> baseSpeed;
+        this->partsInput.ignore(15, '\n');
+        // std::cout << name << aceleration <<" ~ "<< baseSpeed << std::endl;
         Vehicle* kart = new Vehicle(name, aceleration, baseSpeed);
-        this->kartsT->insertNode(kart, name);
+        VehicleT->insertNode(kart, name);
     }
+    return VehicleT;
 }
 
-void Garage::readTires(int qTires)
+RBTree<partS*>* Garage::readPartTree(int qTires)
 {
-    this->tiresT = new RBTree<partS*>();  
+    RBTree<partS*>* partT = new RBTree<partS*>();
     for (int iPieces = 0; iPieces < qTires; ++iPieces)
     {   
         std::string name;
         int landVelocity, propellerVelocity, airDrag;
         std::getline(this->partsInput, name, ',');
-        this->partsInput >> landVelocity >> propellerVelocity >> airDrag;
+        this->partsInput >> landVelocity; 
+        this->partsInput.ignore(1, ',');
+        this->partsInput >> propellerVelocity;
+        this->partsInput.ignore(1, ',');
+        this->partsInput >> airDrag; 
+        this->partsInput.ignore(15, '\n');
+        // std::cout<< name << airDrag << std::endl;
         partS* tires = new partS(name, landVelocity, propellerVelocity, airDrag);
-        this->tiresT->insertNode(tires, name);
+        partT->insertNode(tires, name);
     }
+    return partT;
 }
 
-void Garage::readBikes(int qBikes)
-{    
-    this->bikesT = new RBTree<Vehicle*>();
-    for (int iPieces = 0; iPieces < qBikes; ++iPieces)
-    {
-        std::string name;
-        int aceleration, baseSpeed;
-        std::getline(this->partsInput, name, ',');
-        this->partsInput >> aceleration >> baseSpeed;
-        Vehicle* bike = new Vehicle(name, aceleration, baseSpeed);
-        this->bikesT->insertNode(bike, name);
-    }
+// void Garage::readBikes(int qBikes)
+// {    
+//     this->bikesT = new RBTree<Vehicle*>();
+//     for (int iPieces = 0; iPieces < qBikes; ++iPieces)
+//     {
+//         std::string name;
+//         int aceleration, baseSpeed;
+//         std::getline(this->partsInput, name, ',');
+//         this->partsInput >> aceleration; 
+//         this->partsInput.ignore(1, ',');
+//         this->partsInput >> baseSpeed;
+//         this->partsInput.ignore(15, '\n');
+//                 std::cout << name << aceleration <<" ~ "<< baseSpeed << std::endl;
 
-}
+//         Vehicle* bike = new Vehicle(name, aceleration, baseSpeed);
+//         this->bikesT->insertNode(bike, name);
+//     }
 
-void Garage::readATVs(int qATVs)
-{
-    this->ATVsT = new RBTree<Vehicle*>();
-    for (int iPieces = 0; iPieces < qATVs; ++iPieces)
-    {
-        std::string name;
-        int aceleration, baseSpeed;
-        std::getline(this->partsInput, name, ',');
-        this->partsInput >> aceleration >> baseSpeed;
-        Vehicle* ATV = new Vehicle(name, aceleration, baseSpeed);
-        this->ATVsT->insertNode(ATV, name);
-    }
-}
+// }
 
-void Garage::readGliders(int qGliders)
-{
-    this->glidersT = new RBTree<partS*>();
-    for (int iPieces = 0; iPieces < qGliders; ++iPieces)
-    {   
-        std::string name;
-        int landDrag, waterDrag, airVelocity;
-        std::getline(this->partsInput, name, ',');
-        this->partsInput >> landDrag >> waterDrag >> airVelocity;
-        partS* glider = new partS(name, landDrag, waterDrag, airVelocity);
-        this->glidersT->insertNode(glider, name);
-    }
-}
+// void Garage::readATVs(int qATVs)
+// {
+//     this->ATVsT = new RBTree<Vehicle*>();
+//     for (int iPieces = 0; iPieces < qATVs; ++iPieces)
+//     {
+//         std::string name;
+//         int aceleration, baseSpeed;
+//         std::getline(this->partsInput, name, ',');
+//         this->partsInput >> aceleration >> baseSpeed;
+//         Vehicle* ATV = new Vehicle(name, aceleration, baseSpeed);
+//         this->ATVsT->insertNode(ATV, name);
+//     }
+// }
+
+// void Garage::readGliders(int qGliders)
+// {
+//     this->glidersT = new RBTree<partS*>();
+//     for (int iPieces = 0; iPieces < qGliders; ++iPieces)
+//     {   
+//         std::string name;
+//         int landDrag, waterDrag, airVelocity;
+//         std::getline(this->partsInput, name, ',');
+//         this->partsInput >> landDrag >> waterDrag >> airVelocity;
+//         partS* glider = new partS(name, landDrag, waterDrag, airVelocity);
+//         this->glidersT->insertNode(glider, name);
+//     }
+// }
