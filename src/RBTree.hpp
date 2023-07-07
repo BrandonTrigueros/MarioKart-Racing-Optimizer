@@ -95,7 +95,7 @@ class RBTree {
             //this->fixup (node);
         }
 
-        void insertNode(Type& value, std::string key){
+        void insertNode(Type value, std::string key){
             Node* node = new Node(value, key);
             this->insertNode(node);
         }

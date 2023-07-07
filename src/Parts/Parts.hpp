@@ -3,20 +3,27 @@
 class partS {
     private:
         std::string name;
-        int landV;
-        int waterV;
-        int airV;
+        int land;
+        int water;
+        int air;
     public:
 
         partS () = default;
-        partS(std::string name, int landV, int waterV, int airV)
+        partS(std::string name, int landVelocity, int waterVelocity, int airDrag)
             : name (name)
-            , landV (landV)
-            , waterV (waterV)
-            , airV (airV)
+            , land (landVelocity)
+            , water (waterVelocity)
+            , air (airDrag)
             {}
+        partS(std::string name, int landWaterDrag, int airVelocity)
+            : name (name)
+            , land (landWaterDrag)
+            , water (landWaterDrag)
+            , air (airVelocity)
+            {}
+
         inline std::string getName() const {return this->name;}
-        inline int getLandV() const {return this->landV;}
-        inline int getWaterV() const {return this->waterV;}
-        inline int getAirV() const {return this->airV;}
+        inline int getLand() const {return this->land;}
+        inline int getWater() const {return this->water;}
+        inline int getAir() const {return this->air;}
 };

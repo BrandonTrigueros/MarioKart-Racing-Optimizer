@@ -5,12 +5,12 @@
 
 class Garage {
     private:
-        RBTree<partS*> *tiresT;
-        RBTree<partS*> *glidersT;
-        RBTree<Vehicle*> *kartsT;
-        RBTree<Vehicle*> *bikesT;
-        RBTree<Vehicle*> *ATVsT;
-        RBTree<Driver*> *driversT;
+        RBTree<partS>* tiresT;
+        RBTree<partS>* glidersT;
+        RBTree<Vehicle>* kartsT;
+        RBTree<Vehicle>* bikesT;
+        RBTree<Vehicle>* ATVsT;
+        RBTree<Driver>* driversT;
         std::ifstream playerInput;
         std::ifstream partsInput;
         
@@ -23,9 +23,9 @@ class Garage {
 
         void readParts ();
 
-        RBTree<Vehicle*>* readVehicleTree(int qKarts);
+        RBTree<Vehicle>* readVehicleTree(int qKarts);
         
-        RBTree<partS*>* readPartTree(int qTires);
+        RBTree<partS>* readPartTree(int qTires, bool partType);
 
         // void readBikes(int qBikes);
 
