@@ -182,10 +182,10 @@ void Garage::addDriver (std::string line)
     std::cout<< glider<< std::endl;
 }
 
-Driver* createDriver(std::string tag, std::string character, std::string vehicle, std::string vehicleType, std::string tires, std::string glider)
+Driver* Garage::createDriver(std::string tag, std::string character, std::string vehicle, std::string vehicleType, std::string tires, std::string glider)
 {
     if (vehicleType == std::string("Kart")){
-        // return new KartDriver(tag, character, find en el arbol estas partes);
+        //return new KartDriver(tag, character, find en el arbol estas partes);
     }
 
 
