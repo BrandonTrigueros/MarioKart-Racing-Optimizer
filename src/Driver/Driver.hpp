@@ -14,8 +14,8 @@ class Driver {
         Driver (std::string tag, std::string personage);
         
         Driver(std::string tag, std::string personage, partS* tiresD, partS* gliderD, Vehicle* VehicleD);
-        virtual double get_time_land (int distancia) = 0;
-        virtual double get_time_air (int distancia) = 0;
+        virtual double get_time_land (int distancia);
+        virtual double get_time_air (int distancia);
         double get_time_water (int distancia);
         
         inline std::string getTag() const {return this->tag;}

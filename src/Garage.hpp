@@ -37,7 +37,7 @@ class Garage {
 
         void addDriver (std::string line);
 
-        Driver* createDriver(std::string tag, std::string character, std::string vehicle, std::string vehicleType, std::string tires, std::string glider)
+        Driver* createDriver(std::string tag, std::string character, std::string vehicle, std::string vehicleType, std::string tires, std::string glider);
         // void printStats (Driver* Drivers[], int d_tierra, int d_agua, int d_aire)
         
 };
