@@ -91,7 +91,7 @@ RBTree<Vehicle*>* Garage::readVehicleTree (int qKarts)
         this->partsInput.ignore(1, ',');
         this->partsInput >> baseSpeed;
         this->partsInput.ignore(15, '\n');
-        // std::cout << name << aceleration <<" ~ "<< baseSpeed << std::endl;
+        std::cout << name;
         Vehicle* kart = new Vehicle(name, aceleration, baseSpeed);
         VehicleT->insertNode(kart, name);
     }
