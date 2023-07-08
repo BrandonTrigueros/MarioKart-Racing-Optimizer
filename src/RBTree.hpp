@@ -133,11 +133,12 @@ class RBTree {
             }
         }
         Type* findPerNumber (int number){
-            int conter = 1;
+            int counter = 1;
             for (Iterator it = this->begin(); it != this->end(); ++it){
-                std::cout << conter << ": "<< it.getKey() << std::endl;
-                if (conter == number)
+                // std::cout << conter << ": "<< it.getKey() << std::endl;
+                if (counter == number)
                     return it.getValue();
+                ++counter;
             }
             return nullptr;
         }
@@ -185,6 +186,7 @@ class RBTree {
             return current == original ? nullptr : current;
         }
 
+
         class Iterator {
 
             private:
@@ -213,7 +215,7 @@ class RBTree {
 
                 inline Type* getValue()  {
                     assert(this->node);
-                    return this->node->getValue;
+                    return this->node->getValue();
                 }
 
                 inline const Type& getValue() const {

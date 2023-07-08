@@ -48,5 +48,7 @@ class Garage {
 
 
         void findBestCombinatioForAll();
+
+        void showStatsTrack (traks* track);
         
 };

@@ -35,12 +35,13 @@ void Garage::loadFiles(bool useConsole, std::string filePlayersName, std::string
 
 void Garage::runMenu(IOHandler* ioHandler) {
     int option = 0;
+    int option2 = 0;
     while (option != 6) {
         option = ioHandler->menu();
         switch (option) {
             case 1:
-                option = ioHandler->pieceSubMenu();
-                switch (option) {
+                option2 = ioHandler->pieceSubMenu();
+                switch (option2) {
                     case 1:
                         std::cout<<"Todos los vehiculos son:\n" << std::endl;
                         this->vehiclesT->printTreeOrder();
@@ -54,6 +55,7 @@ void Garage::runMenu(IOHandler* ioHandler) {
                         this->glidersT->printTreeOrder();
                         break;
                     default:
+                        
                         break;
                 }
                 break;
@@ -61,18 +63,21 @@ void Garage::runMenu(IOHandler* ioHandler) {
                 this->findBestCombinatioForAll();
                 break;
             case 3:
-                option = ioHandler->tracksSubMenu(this->traksT);
-                traks* trackSelected = this->traksT->findPerNumber(option);
-                
+                option2 = ioHandler->tracksSubMenu(this->traksT);
+                traks* trackSelected = this->traksT->findPerNumber(option2);
+                std::cout<<"Imprimir estadisticas en Pista: # "<<option2<<"\n\t"<<trackSelected->getName()<<std::endl;
+                this->showStatsTrack(trackSelected);
                 break;
-            case 4:
-                option = ioHandler->playerSubMenu(this->driversT);
-                break;
-            case 5:
-                option = ioHandler->cupSubMenu(this->traksT);
-                break;
-            default:
-                break;
+            // case 4:
+            //     option2 = ioHandler->playerSubMenu(this->driversT);
+            //     std::cout<< option2;
+            //     break;
+            // case 5:
+            //     option2 = ioHandler->cupSubMenu(this->traksT);
+            //     std::cout<< option2;
+            //     break;
+            // default:
+            //     break;
         }
     }
 }
@@ -285,3 +290,11 @@ void Garage::findBestCombinatioForAll(){
     // imprimir ese Driver
 
 }
+
+void Garage::showStatsTrack (traks* track){
+    // esto debe ser con un for para todos los jugadores
+    Driver* driver = this->driversT->getRoot()->getValue();
+    std::cout <<"Pista:\nlandD: "<<track->getLandDistance()<<" waterD: "<< track->getWaterDistance()<<" Aird: "<< track->getAirDistance()<< "|*|"<<std::endl;
+    std::cout<< "GamerTag:"<<driver->getTag() <<"\n\tTiempo: "<< driver->getTime(track->getLandDistance(), track->getWaterDistance(), track->getAirDistance())<< ""<<std::endl;
+}
+
