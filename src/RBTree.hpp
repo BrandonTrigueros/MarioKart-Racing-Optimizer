@@ -104,7 +104,8 @@ class RBTree {
 
     //     }
         Type* search(Node* node, std::string key){
-            //std::cout << "Searching for " << key << " in node: " << node->getKey() << std::endl;
+
+            // std::cout << "Searching for |" << key << "| in node: |" << node->getKey() <<"|"<< std::endl;
             if(node->getKey() == key)
             {
                 //std::cout << "Found key: " << std::endl;
@@ -125,8 +126,10 @@ class RBTree {
             return nullptr;
         }
         void printTreeOrder (){
+            int conter = 1;
             for (Iterator it = this->begin(); it != this->end(); ++it){
-                std::cout << it.getKey() << std::endl;
+                std::cout << conter << ": "<< it.getKey() << std::endl;
+                ++conter;
             }
         }
 

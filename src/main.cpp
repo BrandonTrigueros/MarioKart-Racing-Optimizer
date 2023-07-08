@@ -1,12 +1,10 @@
-#include "ArgumentHandler.hpp"
+#include "IOHandler.hpp"
 #include "Garage.hpp"
 
 #include <iostream>
 int main (int argc, char* argv[]){
-    ArgumentHandler* argHandler = new ArgumentHandler(argc, argv);
+    IOHandler* ioHandler = new IOHandler(argc, argv);
     Garage* garage = new Garage();
-    garage->run(argHandler->getUseConsole(),argHandler->getPlayersFileName(), argHandler->getPartsFileName());
-
-
-    return 0;
+    garage->loadFiles(ioHandler->getUseConsole(),ioHandler->getPlayersFileName(), ioHandler->getPartsFileName());
+    garage->runMenu(ioHandler);
 }

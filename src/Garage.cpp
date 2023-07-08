@@ -5,13 +5,13 @@ Garage::Garage ()
 
 Garage::~Garage ()
 {
-    // delete this->tiresT;
-    // delete this->glidersT;
-    // delete this->vehicleT;
-    // delete this->driversT;
+    delete this->tiresT;
+    delete this->glidersT;
+    delete this->vehiclesT;
+    delete this->driversT;
 }
 
-void Garage::run(bool useConsole, std::string filePlayersName, std::string filePartsName)
+void Garage::loadFiles(bool useConsole, std::string filePlayersName, std::string filePartsName)
 {
     std::ifstream playerInput;
     std::ifstream partsInput;
@@ -29,26 +29,74 @@ void Garage::run(bool useConsole, std::string filePlayersName, std::string fileP
     }
 
     partsInput.close();
-    this->print();
+    playerInput.close();
     
 }
 
-void Garage::print(){
-
-    this->glidersT->printTreeOrder();
-    // std::cout <<"Root vehicles tree /*/ "<< this->vehiclesT->getRoot()->getKey() << std::endl;
-    // std::cout <<"Root left vheicles /*/ "<< this->vehiclesT->getRoot()->getLeft()->getKey() << std::endl;
-    // std::cout <<"Root rigth vheicles /*/ "<< this->vehiclesT->getRoot()->getRight()->getKey() << std::endl;
-    // std::cout << "Root tires tree /*/ " << this->tiresT->getRoot()->getKey() << std::endl;
-    // std::cout << "Root gliders /*/ " << this->glidersT->getRoot()->getKey() << std::endl;
-    // // std::cout << "Firt otro" << ;
-    // std::cout <<"First vehicle /*/ "<< this->vehiclesT->begin().getKey() << std::endl;
+void Garage::runMenu(IOHandler* ioHandler) {
+    int option = 0;
+    int option2 = 0;
+    while (option != 6) {
+        option = ioHandler->menu();
+        switch (option) {
+            case 1:
+                option2 = ioHandler->pieceSubMenu();
+                switch (option2) {
+                    case 1:
+                        this->vehiclesT->printTreeOrder();
+                        break;
+                    case 2:
+                        this->tiresT->printTreeOrder();
+                        break;
+                    case 3:
+                        this->glidersT->printTreeOrder();
+                        break;
+                    default:
+                        break;
+                }
+                break;
+            case 2:
+                //this->findBestCombinatioForAll();
+                break;
+            case 3:
+                option2 = ioHandler->tracksSubMenu(this->traksT);
+                break;
+            case 4:
+                option2 = ioHandler->playerSubMenu(this->driversT);
+                break;
+            case 5:
+                option2 = ioHandler->cupSubMenu(this->traksT);
+                break;
+            default:
+                break;
+        }
+    }
 }
+
+//Codigo tomado de: https://www.techiedelight.com/trim-string-cpp-removeleading-trailingspaces/#:~:text=We%20can%20use%20a%20combination,functions%20to%20trim%20the%20string.
+const std::string WHITESPACE = " \n\r\t\f\v";
+std::string ltrim(const std::string& s)
+{
+ size_t start = s.find_first_not_of(WHITESPACE);
+ return (start == std::string::npos) ? "" : s.substr(start);
+}
+
+std::string rtrim(const std::string& s)
+{
+    size_t end = s.find_last_not_of(WHITESPACE);
+    return (end == std::string::npos) ? "" : s.substr(0, end + 1);
+}
+
+std::string trim(const std::string& s)
+{
+    return rtrim(ltrim(s));
+}
+// Fin de codigo tomado
 
 void Garage::readPartsFile ()
 {
     int qPieces = 0;
-    std::string partType = "vacio";
+    std::string partType;
     this->vehiclesT = new RBTree<Vehicle>();
     for (int category = 0; category < 5; ++category)
     {
@@ -86,7 +134,7 @@ void Garage::readPartsFile ()
             this->glidersT = this->readPartTree(qPieces, 1);
         }
         this->partsInput.ignore (10, '\n');
-        std::cout <<std::endl;
+        // std::cout <<std::endl;
     }
 }
 
@@ -103,7 +151,7 @@ void Garage::readVehicleTree (int qVehicles)
         this->partsInput.ignore(1, ',');
         this->partsInput >> baseSpeed;
         this->partsInput.ignore(15, '\n');
-        std::cout << name;
+        // std::cout << name << std::endl;
         Vehicle* vehicle = new Vehicle(name, aceleration, baseSpeed);
         this->vehiclesT->insertNode(*vehicle, name);
     }
@@ -121,7 +169,7 @@ RBTree<partS>* Garage::readPartTree(int qParts, bool partType)
         this->partsInput >> land; 
         this->partsInput.ignore(1, ',');
         this->partsInput >> water;
-        // std::cout<< name;
+        // std::cout<< name <<std::endl;
         partS* part;
         if (partType == 0) {
             this->partsInput.ignore(1, ',');
@@ -152,13 +200,14 @@ void Garage::readDriversFile(){
     std::getline(this->playerInput, line, '\n');
     //std::cout << "---------------------------------";
     this->driversT = new RBTree<Driver>();
-    while(line.length() > 1){
+    int i=0;
+    while(line.length()){
         //std::cout <<"Linea de Driver leida --"<< line<< " --"<< std::endl;
         this->addDriver(line);
         std::getline(this->playerInput, line, '\n');
-        break;
-    }
 
+        i++;
+    }
 }
 
 void Garage::addTrack (std::string line)
@@ -171,7 +220,7 @@ void Garage::addTrack (std::string line)
     input.ignore(1, ',');
     input >> waterDistance;
     input.ignore(1, ',');
-    input >> airDistance; 
+    input >> airDistance;
     input.ignore(15, '\n');
     traks* trak = new traks(name, landDistance, waterDistance, airDistance);
     this->traksT->insertNode(*trak, name);
@@ -188,26 +237,24 @@ void Garage::addDriver (std::string line)
     std::getline(input, vehicleType, ',');
     std::getline(input, tires, ',');
     std::getline(input, glider, '\n');
-    //std::cout<< "Antes de create :"<<glider<< std::endl;
-    Driver* driver = createDriver(tag, character, vehicle, vehicleType, tires, glider);
+    glider = trim(glider);
+    Driver* driver = this->createDriver(tag, character, vehicle, vehicleType, tires, glider);
     this->driversT->insertNode(*driver, tag);
 }
 
-Driver* Garage::createDriver(std::string tag, std::string character, std::string vehicle, std::string vehicleType, std::string tires, std::string glider)
+Driver* Garage::createDriver(std::string tag, std::string character, std::string vehicle, std::string vehicleType, std::string tires, std::string& glider)
 {
     //std::cout<< "Buscando--------------" << vehicle<<"--------------"<< std::endl;
     Vehicle* vehicleD = this->vehiclesT->search(this->vehiclesT->getRoot(), vehicle);
     //std::cout<< "Buscando--------------" << tires <<"--------------"<< std::endl;
     partS *tiresD = this->tiresT->search(this->tiresT->getRoot(), tires);
     // std::cout<< "busco tires"<< std::endl;
-    //std::cout<< "Buscando--------------" << glider<<"--------------"<< std::endl;
     partS* gliderD = this->glidersT->search(this->glidersT->getRoot(), glider);
     // std::cout<< "busco gliders"<< std::endl;
 
-    
     if (vehicleD && tiresD && gliderD) 
     {
-        std::cout<< "not null" << std::endl;
+        // std::cout<< "not null" << std::endl;
         if (vehicleType == std::string("Kart"))
         {
             return new KartDriver(tag, character, tiresD, gliderD, vehicleD);
@@ -221,7 +268,7 @@ Driver* Garage::createDriver(std::string tag, std::string character, std::string
             return new ATVDriver(tag, character, tiresD, gliderD, vehicleD);
         }
     }
-    std::cout<< "yes null" << std::endl;
+    // std::cout<< "yes null" << std::endl;
 
     return new Driver(tag, character);
 }

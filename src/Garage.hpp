@@ -4,6 +4,7 @@
 #include "Driver/MotorcycleDriver.hpp"
 #include "Driver/ATVDriver.hpp"
 #include "RBTree.hpp"
+#include "IOHandler.hpp"
 #include <fstream>
 #include <limits>
 #include <sstream>
@@ -24,7 +25,9 @@ class Garage {
         ~Garage ();
 
 
-        void run (bool useConsole, std::string filePlayersName, std::string filePartsName);
+        void loadFiles (bool useConsole, std::string filePlayersName, std::string filePartsName);
+
+        void runMenu (IOHandler* ioHandler);
 
         void readPartsFile ();
 
@@ -40,7 +43,7 @@ class Garage {
 
         void addDriver (std::string line);
 
-        Driver* createDriver(std::string tag, std::string character, std::string vehicle, std::string vehicleType, std::string tires, std::string glider);
+        Driver* createDriver(std::string tag, std::string character, std::string vehicle, std::string vehicleType, std::string tires, std::string& glider);
         // void printStats (Driver* Drivers[], int d_tierra, int d_agua, int d_aire)
         
 };
