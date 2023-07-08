@@ -132,6 +132,15 @@ class RBTree {
                 ++conter;
             }
         }
+        Type* findPerNumber (int number){
+            int conter = 1;
+            for (Iterator it = this->begin(); it != this->end(); ++it){
+                std::cout << conter << ": "<< it.getKey() << std::endl;
+                if (conter == number)
+                    return it.getValue();
+            }
+            return nullptr;
+        }
 
     // private:
     //     void leftRotate(Node* node){

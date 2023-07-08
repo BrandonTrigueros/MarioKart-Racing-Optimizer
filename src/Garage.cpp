@@ -35,20 +35,22 @@ void Garage::loadFiles(bool useConsole, std::string filePlayersName, std::string
 
 void Garage::runMenu(IOHandler* ioHandler) {
     int option = 0;
-    int option2 = 0;
     while (option != 6) {
         option = ioHandler->menu();
         switch (option) {
             case 1:
-                option2 = ioHandler->pieceSubMenu();
-                switch (option2) {
+                option = ioHandler->pieceSubMenu();
+                switch (option) {
                     case 1:
+                        std::cout<<"Todos los vehiculos son:\n" << std::endl;
                         this->vehiclesT->printTreeOrder();
                         break;
                     case 2:
+                        std::cout<<"Todas las llantas son:\n" << std::endl;
                         this->tiresT->printTreeOrder();
                         break;
                     case 3:
+                        std::cout<<"Todos los planeador son:\n" << std::endl;
                         this->glidersT->printTreeOrder();
                         break;
                     default:
@@ -56,16 +58,18 @@ void Garage::runMenu(IOHandler* ioHandler) {
                 }
                 break;
             case 2:
-                //this->findBestCombinatioForAll();
+                this->findBestCombinatioForAll();
                 break;
             case 3:
-                option2 = ioHandler->tracksSubMenu(this->traksT);
+                option = ioHandler->tracksSubMenu(this->traksT);
+                traks* trackSelected = this->traksT->findPerNumber(option);
+                
                 break;
             case 4:
-                option2 = ioHandler->playerSubMenu(this->driversT);
+                option = ioHandler->playerSubMenu(this->driversT);
                 break;
             case 5:
-                option2 = ioHandler->cupSubMenu(this->traksT);
+                option = ioHandler->cupSubMenu(this->traksT);
                 break;
             default:
                 break;
@@ -271,4 +275,13 @@ Driver* Garage::createDriver(std::string tag, std::string character, std::string
     // std::cout<< "yes null" << std::endl;
 
     return new Driver(tag, character);
+}
+
+
+void Garage::findBestCombinatioForAll(){
+    // crear un arreglo de tiempos
+    // recorer cada pista con cada Driver "2 for que recorran el arbol"
+    // comparar cual tiene menor tiempo
+    // imprimir ese Driver
+
 }

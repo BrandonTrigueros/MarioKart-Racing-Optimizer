@@ -19,6 +19,7 @@ class Driver {
         virtual double get_time_land (int distancia) {return 0;}
         virtual double get_time_air (int distancia) {return 0;}
         double get_time_water (int distancia);
+        double getTime(int landDis, int waterDis, int airDis);
         
         inline std::string getTag() const {return this->tag;}
         inline std::string getpersonage() const {return this->personage;}

@@ -12,5 +12,13 @@ Driver::Driver(std::string tag, std::string personage, partS* tiresD, partS* gli
 
 
 double Driver::get_time_water (int distancia) {
-    return ((0.7 * distancia) * this->VehicleD->getBaseSpeed());
+    return ((0.7 * distancia) * this->VehicleD->getBaseSpeed()
+    + this->VehicleD->getBaseSpeed()
+    + (1.2 * this->tiresD->getWater())
+    - (0.7 * this->gliderD->getWater()));
+}
+
+
+double Driver::getTime(int landDis, int waterDis, int airDis){
+    return get_time_land(landDis) + get_time_water(waterDis) + get_time_air(airDis);
 }
