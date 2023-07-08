@@ -319,29 +319,67 @@ void Garage::findBestCombinatioForAll()     // Mejor combinacion para todas las 
 {
     double minimunTime = 0;
     double currentTime = 0;
+    Driver* bestDriver = nullptr;
     for (typename RBTree<Driver>::Iterator it = this->driversT->begin(); it != this->driversT->end(); ++it) {
         for (typename RBTree<traks>::Iterator it2 = this->traksT->begin(); it2 != this->traksT->end(); ++it2) {
             currentTime += it.getValue()->getTime(it2.getValue()->getLandDistance(), it2.getValue()->getWaterDistance(), it2.getValue()->getAirDistance());
         }
         if (currentTime < minimunTime) {
             minimunTime = currentTime;
+            bestDriver = it.getValue();
         }
+        currentTime = 0;
     }
+    std::cout << "La mejor combinación para todas las pistas es la del jugador: " << bestDriver->getTag()
+                << " con un tiempo de: " << minimunTime
+                << "Automovil: " << bestDriver->getVehicle()->getName() << "/n"
+                << "Ruedas: " << bestDriver->getTires()->getName() << "/n"
+                << "Planeador: " << bestDriver->getGlider()->getName() << std::endl;
 }
 
-void Garage::showStatsTrack(traks *track)   // Mejor combinacion para una pista
+void Garage::showStatsTrack(traks* track)   // Mejor combinacion para una pista
 {
-    // esto debe ser con un for para todos los jugadores
-    Driver *driver = this->driversT->getRoot()->getValue();
-    std::cout << "Pista:\nlandD: " << track->getLandDistance() << " waterD: " << track->getWaterDistance() << " Aird: " << track->getAirDistance() << "|*|" << std::endl;
-    std::cout << "GamerTag:" << driver->getTag() << "\n\tTiempo: " << driver->getTime(track->getLandDistance(), track->getWaterDistance(), track->getAirDistance()) << "" << std::endl;
+    double minimunTime = 0;
+    double currentTime = 0;
+    Driver* bestDriver = nullptr;
+    for (typename RBTree<Driver>::Iterator it = this->driversT->begin(); it != this->driversT->end(); ++it) {
+        currentTime += it.getValue()->getTime(track->getLandDistance(), track->getWaterDistance(), track->getAirDistance());
+        if (currentTime < minimunTime) {
+            minimunTime = currentTime;
+            bestDriver = it.getValue();
+        }
+        currentTime = 0;
+    }
+    std::cout << "La mejor combinación para la pista: " << track->getName() << " es la del jugador: " << bestDriver->getTag()
+                << " con un tiempo de: " << minimunTime
+                << "Automovil: " << bestDriver->getVehicle()->getName() << "/n"
+                << "Ruedas: " << bestDriver->getTires()->getName() << "/n"
+                << "Planeador: " << bestDriver->getGlider()->getName() << std::endl;
 }
 
 void Garage::findAveragePos(Driver* driverSelected) {   //Pos promedio de un jugador para todas las pistas
-
+    // Para cada pista encontrar la tabla de posiciones
+    // Para cada posicion en la tabla de posiciones encontrar la posicion del jugador\
+    // Sumar las posiciones y dividir entre el numero de pistas
 }
 
 void Garage::findBestCombinatioForCup(traks** cup) {    // Mejor combinacion para una copa
-
-
+    double minimunTime = 0;
+    double currentTime = 0;
+    Driver* bestDriver = nullptr;
+    for (typename RBTree<Driver>::Iterator it = this->driversT->begin(); it != this->driversT->end(); ++it) {
+        for (int i = 0; i < 4; ++i) {
+            currentTime += it.getValue()->getTime(cup[i]->getLandDistance(), cup[i]->getWaterDistance(), cup[i]->getAirDistance());
+        }
+        if (currentTime < minimunTime) {
+            minimunTime = currentTime;
+            bestDriver = it.getValue();
+        }
+        currentTime = 0;
+    }
+    std::cout << "La mejor combinación para la copa es la del jugador: " << bestDriver->getTag()
+                << " con un tiempo de: " << minimunTime
+                << "Automovil: " << bestDriver->getVehicle()->getName() << "/n"
+                << "Ruedas: " << bestDriver->getTires()->getName() << "/n"
+                << "Planeador: " << bestDriver->getGlider()->getName() << std::endl;
 }
