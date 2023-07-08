@@ -32,11 +32,11 @@ public:
 private:
     void readPartsFile();
 
+    void readDriversFile();
+
     void readVehicleTree(int qKarts);
 
     RBTree<partS> *readPartTree(int qTires, bool partType);
-
-    void readDriversFile();
 
     void addTrack(std::string line);
 
@@ -48,7 +48,11 @@ private:
 
     void findBestCombinatioForAll();
 
-    void showStatsTrack(traks *track);
+    void showStatsTrack(traks* trackSelected);
+
+    void findAveragePos(Driver* driverSelected);
+
+    void findBestCombinatioForCup(traks** cup);
 
     std::string trim(const std::string &str);
 
