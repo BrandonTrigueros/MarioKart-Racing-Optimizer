@@ -34,14 +34,15 @@ void Garage::run(bool useConsole, std::string filePlayersName, std::string fileP
 }
 
 void Garage::print(){
-    std::cout <<"Root vehicles tree /*/ "<< this->vehiclesT->getRoot()->getKey() << std::endl;
-    std::cout <<"Root left vheicles /*/ "<< this->vehiclesT->getRoot()->getLeft()->getKey() << std::endl;
-    std::cout <<"Root rigth vheicles /*/ "<< this->vehiclesT->getRoot()->getRight()->getKey() << std::endl;
-    std::cout << "Root tires tree /*/ " << this->tiresT->getRoot()->getKey() << std::endl;
-    std::cout << "Root gliders /*/ " << this->glidersT->getRoot()->getKey() << std::endl;
-    // std::cout << "Firt otro" << ;
 
-    std::cout <<"Firstr vehicle /*/ "<< this->vehiclesT->begin().getKey() << std::endl;
+    this->glidersT->printTreeOrder();
+    // std::cout <<"Root vehicles tree /*/ "<< this->vehiclesT->getRoot()->getKey() << std::endl;
+    // std::cout <<"Root left vheicles /*/ "<< this->vehiclesT->getRoot()->getLeft()->getKey() << std::endl;
+    // std::cout <<"Root rigth vheicles /*/ "<< this->vehiclesT->getRoot()->getRight()->getKey() << std::endl;
+    // std::cout << "Root tires tree /*/ " << this->tiresT->getRoot()->getKey() << std::endl;
+    // std::cout << "Root gliders /*/ " << this->glidersT->getRoot()->getKey() << std::endl;
+    // // std::cout << "Firt otro" << ;
+    // std::cout <<"First vehicle /*/ "<< this->vehiclesT->begin().getKey() << std::endl;
 }
 
 void Garage::readPartsFile ()
@@ -60,27 +61,27 @@ void Garage::readPartsFile ()
         }
         if (partType == std::string("Karts"))
         {
-            std::cout << "si kart***";
+            // std::cout << "si kart***";
             this->readVehicleTree(qPieces);
         }
         else if (partType == std::string("Tires"))
         {
-            std::cout << "si llantas***";
+            // std::cout << "si llantas***";
             this->tiresT = this->readPartTree(qPieces, 0);
         }
         else if (partType == std::string("Bikes"))
         {
-            std::cout << "si motos***";
+            // std::cout << "si motos***";
             this->readVehicleTree(qPieces);
         }
         else if (partType == std::string("ATVs"))
         {
-            std::cout << "si atvs***";
+            // std::cout << "si atvs***";
             this->readVehicleTree(qPieces);
         }
         else if (partType == std::string("Gliders"))
         {
-            std::cout << "si gliders***";
+            // std::cout << "si gliders***";
 
             this->glidersT = this->readPartTree(qPieces, 1);
         }
@@ -120,7 +121,7 @@ RBTree<partS>* Garage::readPartTree(int qParts, bool partType)
         this->partsInput >> land; 
         this->partsInput.ignore(1, ',');
         this->partsInput >> water;
-        std::cout<< name;
+        // std::cout<< name;
         partS* part;
         if (partType == 0) {
             this->partsInput.ignore(1, ',');
@@ -131,6 +132,7 @@ RBTree<partS>* Garage::readPartTree(int qParts, bool partType)
             part = new partS(name, land, water);
         }
         this->partsInput.ignore(15, '\n');
+        // std::cout << name << std::endl;
         partT->insertNode(*part, name);
     }
     return partT;
@@ -151,10 +153,10 @@ void Garage::readDriversFile(){
     //std::cout << "---------------------------------";
     this->driversT = new RBTree<Driver>();
     while(line.length() > 1){
-        // std::cout <<"*"<< line<< "/"<< std::endl;
+        //std::cout <<"Linea de Driver leida --"<< line<< " --"<< std::endl;
         this->addDriver(line);
         std::getline(this->playerInput, line, '\n');
-        // break;
+        break;
     }
 
 }
@@ -186,22 +188,26 @@ void Garage::addDriver (std::string line)
     std::getline(input, vehicleType, ',');
     std::getline(input, tires, ',');
     std::getline(input, glider, '\n');
+    //std::cout<< "Antes de create :"<<glider<< std::endl;
     Driver* driver = createDriver(tag, character, vehicle, vehicleType, tires, glider);
     this->driversT->insertNode(*driver, tag);
-    // std::cout<< glider<< std::endl;
 }
 
 Driver* Garage::createDriver(std::string tag, std::string character, std::string vehicle, std::string vehicleType, std::string tires, std::string glider)
 {
-    // Vehicle* vehicleD = this->vehiclesT->find(vehicle);
-    Vehicle* vehicleD = &(this->vehiclesT->getRoot()->getValue());
-    // partS *tiresD = this->tiresT->find(tires);
-    partS* tiresD = &(this->tiresT->getRoot()->getValue());
-    // partS* gliderD = this->glidersT->find(glider);
-    partS* gliderD = &(this->glidersT->getRoot()->getValue());
+    //std::cout<< "Buscando--------------" << vehicle<<"--------------"<< std::endl;
+    Vehicle* vehicleD = this->vehiclesT->search(this->vehiclesT->getRoot(), vehicle);
+    //std::cout<< "Buscando--------------" << tires <<"--------------"<< std::endl;
+    partS *tiresD = this->tiresT->search(this->tiresT->getRoot(), tires);
+    // std::cout<< "busco tires"<< std::endl;
+    //std::cout<< "Buscando--------------" << glider<<"--------------"<< std::endl;
+    partS* gliderD = this->glidersT->search(this->glidersT->getRoot(), glider);
+    // std::cout<< "busco gliders"<< std::endl;
 
+    
     if (vehicleD && tiresD && gliderD) 
     {
+        std::cout<< "not null" << std::endl;
         if (vehicleType == std::string("Kart"))
         {
             return new KartDriver(tag, character, tiresD, gliderD, vehicleD);
@@ -215,5 +221,7 @@ Driver* Garage::createDriver(std::string tag, std::string character, std::string
             return new ATVDriver(tag, character, tiresD, gliderD, vehicleD);
         }
     }
+    std::cout<< "yes null" << std::endl;
+
     return new Driver(tag, character);
 }

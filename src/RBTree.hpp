@@ -42,7 +42,7 @@ class RBTree {
 
             void setParent(Node* parent) {this->parent = parent;}
             std::string getKey() {return this->key;}
-            Type& getValue() {return this->value;}
+            Type* getValue() {return &this->value;}
             Color getColor() {return this->color;}
             Node* getLeft() {return this->left;}
             Node* getRight() {return this->right;}
@@ -103,6 +103,32 @@ class RBTree {
     //     Node* search(Node* node, std::string key){
 
     //     }
+        Type* search(Node* node, std::string key){
+            //std::cout << "Searching for " << key << " in node: " << node->getKey() << std::endl;
+            if(node->getKey() == key)
+            {
+                //std::cout << "Found key: " << std::endl;
+                return node->getValue();
+            }
+            else if(key < node->getKey()){
+                if (node->getLeft()){
+                    //std::cout << "Going left" << std::endl;
+                    return this->search(node->getLeft(), key);
+                }
+            }
+            else if(node->getKey() < key){
+                if (node->getRight()){
+                    //std::cout << "Going right" << std::endl;
+                    return this->search(node->getRight(), key);
+                }
+            }
+            return nullptr;
+        }
+        void printTreeOrder (){
+            for (Iterator it = this->begin(); it != this->end(); ++it){
+                std::cout << it.getKey() << std::endl;
+            }
+        }
 
     // private:
     //     void leftRotate(Node* node){
@@ -117,9 +143,9 @@ class RBTree {
 
     //     }
 
-    //     void clear(Node* node){
-
-    //     }
+        void clear(Node* node){
+            
+        }
 
         static Node* findMinimum(Node* subtree) {
             if (subtree) {
@@ -130,19 +156,19 @@ class RBTree {
             return subtree;
         }
 
-        static Node& findNextNode(Node* current) {
+        static Node* findNextNode(Node* current) {
             Node* original = current;
             if (current->getRight()) {
                 return findMinimum(current->getRight());
             }
-            while (current->parent && current == current->parent->right) {
+            while (current->getParent() && current == current->getParent()->getRight()) {
                 current = current->getParent();
                 if (!current->getParent()) {
                     return nullptr;
                 }
             }
-            if (current && current->parent && current == current->parent->left)
-                current = current->parent;
+            if (current && current->getParent() && current == current->getParent()->getLeft())
+                current = current->getParent();
 
             return current == original ? nullptr : current;
         }
@@ -173,7 +199,7 @@ class RBTree {
                     return this->node->getKey;
                 }
 
-                inline Type& getValue()  {
+                inline Type* getValue()  {
                     assert(this->node);
                     return this->node->getValue;
                 }
