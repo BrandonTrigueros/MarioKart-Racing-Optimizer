@@ -1,4 +1,6 @@
-#include "../Parts/Parts.hpp"
+#pragma once
+
+#include "../Parts/PartS.hpp"
 #include "../Parts/Vehicle.hpp"
 #include "../Parts/Traks.hpp"
 

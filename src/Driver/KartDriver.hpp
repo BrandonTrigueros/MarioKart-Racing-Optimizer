@@ -1,3 +1,5 @@
+#pragma once
+
 #include "Driver.hpp"
 
 class KartDriver final : public Driver {

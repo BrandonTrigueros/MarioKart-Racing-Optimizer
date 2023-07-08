@@ -1,3 +1,5 @@
+#pragma once
+
 #include "Driver.hpp"
 
 class MotorcycleDriver final : public Driver {

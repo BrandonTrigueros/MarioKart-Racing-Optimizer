@@ -1,4 +1,8 @@
-#include "Driver/Driver.hpp"
+#pragma once
+
+#include "Driver/KartDriver.hpp"
+#include "Driver/MotorcycleDriver.hpp"
+#include "Driver/ATVDriver.hpp"
 #include "RBTree.hpp"
 #include <fstream>
 #include <limits>
@@ -8,9 +12,8 @@ class Garage {
     private:
         RBTree<partS>* tiresT;
         RBTree<partS>* glidersT;
-        RBTree<Vehicle>* kartsT;
-        RBTree<Vehicle>* bikesT;
-        RBTree<Vehicle>*ATVsT;
+        RBTree<Vehicle>* vehiclesT;
+
         RBTree<traks>* traksT;
         RBTree<Driver>* driversT;
         std::ifstream playerInput;
@@ -25,7 +28,7 @@ class Garage {
 
         void readPartsFile ();
 
-        RBTree<Vehicle>* readVehicleTree(int qKarts);
+        void readVehicleTree(int qKarts);
         
         RBTree<partS>* readPartTree(int qTires, bool partType);
 
