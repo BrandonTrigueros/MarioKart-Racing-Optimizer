@@ -10,24 +10,20 @@
 class IOHandler
 {
 private:
-
     bool useConsole = false;
     std::string playersFileName = "input/players.csv";
     std::string partsFileName = "input/pieces.csv";
 
 public:
-    IOHandler(int args, char* argsv[]);
+    IOHandler(int args, char *argsv[]);
     ~IOHandler();
 
-    inline bool getUseConsole(){return this->useConsole;}
-    inline std::string getPlayersFileName(){return this->playersFileName;}
-    inline std::string getPartsFileName(){return this->partsFileName;}
+    inline bool getUseConsole() { return this->useConsole; }
+    inline std::string getPlayersFileName() { return this->playersFileName; }
+    inline std::string getPartsFileName() { return this->partsFileName; }
     int menu();
     int pieceSubMenu();
-    int tracksSubMenu(RBTree<traks>* tracks);
-    int playerSubMenu(RBTree<Driver>* players);
-    int cupSubMenu(RBTree<traks>* tracks);
-
-    
-
+    int tracksSubMenu(RBTree<traks> *tracks);
+    int playerSubMenu(RBTree<Driver> *players);
+    int cupSubMenu(RBTree<traks> *tracks, traks** tracksSelected);
 };

@@ -9,46 +9,50 @@
 #include <limits>
 #include <sstream>
 
-class Garage {
-    private:
-        RBTree<partS>* tiresT;
-        RBTree<partS>* glidersT;
-        RBTree<Vehicle>* vehiclesT;
+class Garage
+{
+private:
+    RBTree<partS> *tiresT;
+    RBTree<partS> *glidersT;
+    RBTree<Vehicle> *vehiclesT;
 
-        RBTree<traks>* traksT;
-        RBTree<Driver>* driversT;
-        std::ifstream playerInput;
-        std::ifstream partsInput;
-        
-    public:
-        Garage ();
-        ~Garage ();
+    RBTree<traks> *traksT;
+    RBTree<Driver> *driversT;
+    std::ifstream playerInput;
+    std::ifstream partsInput;
 
+public:
+    Garage();
+    ~Garage();
 
-        void loadFiles (bool useConsole, std::string filePlayersName, std::string filePartsName);
+    void loadFiles(bool useConsole, std::string filePlayersName, std::string filePartsName);
 
-        void runMenu (IOHandler* ioHandler);
+    void runMenu(IOHandler *ioHandler);
 
-        void readPartsFile ();
+private:
+    void readPartsFile();
 
-        void readVehicleTree(int qKarts);
-        
-        RBTree<partS>* readPartTree(int qTires, bool partType);
+    void readVehicleTree(int qKarts);
 
-        void print();
+    RBTree<partS> *readPartTree(int qTires, bool partType);
 
-        void readDriversFile ();
+    void readDriversFile();
 
-        void addTrack (std::string line);
+    void addTrack(std::string line);
 
-        void addDriver (std::string line);
+    void addDriver(std::string line);
 
-        Driver* createDriver(std::string tag, std::string character, std::string vehicle, std::string vehicleType, std::string tires, std::string& glider);
-        // void printStats (Driver* Drivers[], int d_tierra, int d_agua, int d_aire)
+    Driver *createDriver(std::string tag, std::string character, std::string vehicle, std::string vehicleType, std::string tires, std::string &glider);
 
+    // void printStats (Driver* Drivers[], int d_tierra, int d_agua, int d_aire)
 
-        void findBestCombinatioForAll();
+    void findBestCombinatioForAll();
 
-        void showStatsTrack (traks* track);
-        
+    void showStatsTrack(traks *track);
+
+    std::string trim(const std::string &str);
+
+    std::string ltrim(const std::string &str);
+
+    std::string rtrim(const std::string &str);
 };
