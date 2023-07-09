@@ -17,6 +17,8 @@ class traks{
         {
 
         }
+
+        ~traks() = default;
         
         inline std::string getName() const {return this->name;}
         inline int getLandDistance() const {return this->landDistance;}

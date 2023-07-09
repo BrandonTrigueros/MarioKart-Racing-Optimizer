@@ -77,7 +77,7 @@ int IOHandler::tracksSubMenu(RBTree<traks> *tracks)
     }
 }
 
-int IOHandler::playerSubMenu(RBTree<Driver*> *players)
+int IOHandler::playerSubMenu(RBTree<Driver> *players)
 {
     std::cout << "Seleccione un jugador para calcular su posición promedio a lo largo de todas las pistas: \n"
               << std::endl;

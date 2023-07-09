@@ -4,7 +4,7 @@ Menu::Menu()
 {
 }
 
-void Menu::run(Garage *garage, IOHandler *ioHandler)
+void Menu::run(Garage* garage, IOHandler* ioHandler)
 {
     int option = 0;
     int option2 = 0;
@@ -61,7 +61,7 @@ void Menu::run(Garage *garage, IOHandler *ioHandler)
         case 4:
             option2 = ioHandler->playerSubMenu(garage->getDriversT());
             if (option2 > 0)
-                driverSelected = *(garage->getDriversT()->searchPerNumber(option2));
+                driverSelected = garage->getDriversT()->searchPerNumber(option2);
             if (driverSelected != nullptr)
             {
                 if (driverSelected->getValid())

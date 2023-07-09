@@ -24,14 +24,18 @@ class RBTree {
     class Node {
         private:
             std::string key;
-            Type value;
+            Type* value;
             Color color;
             Node *left, *right, *parent;
 
         public:
-            explicit Node(Type& value, std::string key, Color color = RED, Node* left = nullptr, Node* right = nullptr, Node* parent = nullptr)
+            explicit Node(Type* value, std::string key, Color color = RED, Node* left = nullptr, Node* right = nullptr, Node* parent = nullptr)
                 : key(key), value(value), color(color), left(left), right(right), parent(parent)
             {}
+
+            ~Node() {
+                delete this->value;
+            }
 
         public:
             inline bool operator<(const Node& other) const {return this->key < other.key;}
@@ -42,7 +46,7 @@ class RBTree {
 
             void setParent(Node* parent) {this->parent = parent;}
             std::string getKey() {return this->key;}
-            Type* getValue() {return &this->value;}
+            Type* getValue() {return this->value;}
             Color getColor() {return this->color;}
             Node* getLeft() {return this->left;}
             Node* getRight() {return this->right;}
@@ -100,14 +104,11 @@ class RBTree {
             //this->fixup (node);
         }
 
-        void insertNode(Type value, std::string key){
+        void insertNode(Type* value, std::string key){
             Node* node = new Node(value, key);
             this->insertNode(node);
         }
 
-    //     Node* search(Node* node, std::string key){
-
-    //     }
         Type* search(Node* node, std::string key){
 
             // std::cout << "Searching for |" << key << "| in node: |" << node->getKey() <<"|"<< std::endl;
@@ -149,27 +150,40 @@ class RBTree {
             return nullptr;
         }
 
-    // private:
-    //     void leftRotate(Node* node){
+    private:
+        void leftRotate(Node* node){
 
-    //     }
+        }
 
-    //     void rightRotate(Node* node){
+        void rightRotate(Node* node){
 
-    //     }
+        }
 
-    //     void fixup(Node* node){
+        void fixup(Node* node){
 
-    //     }
+        }
 
-        // void clear(Node* node){
-            
-        // }
+        void clear(Node* node){
+            if (node!=nullptr){
+                this->clear(node->getLeft());
+                this->clear(node->getRight());
+                delete node;
+            }
+        }
 
         static Node* findMinimum(Node* subtree) {
             if (subtree) {
                 while (subtree->getLeft()) {
                     subtree = subtree->getLeft();
+                }
+            }
+            return subtree;
+        }
+
+        static Node* findMaximum(Node* subtree) {
+            if (subtree) {
+                while (subtree->getRight()) {
+                    subtree = subtree->getRight();
                 }
             }
             return subtree;
@@ -192,7 +206,7 @@ class RBTree {
             return current == original ? nullptr : current;
         }
 
-
+    public:
         class Iterator {
 
             private:
@@ -207,6 +221,10 @@ class RBTree {
 
                 inline bool operator != (const Iterator& other) const {
                     return this->node != other.node;
+                }
+
+                inline bool operator == (const Iterator& other) const {
+                    return this->node == other.node;
                 }
 
                 inline std::string getKey() {
@@ -233,18 +251,30 @@ class RBTree {
                     this->node = RBTree::findNextNode(this->node);
                     return *this;
                 }
+
+                inline Iterator operator ++(int) {
+                    Iterator temp = *this;
+                    this->node = RBTree::findNextNode(this->node);
+                    return temp;
+                }
         };
 
-        Iterator begin() {
+        Iterator begin() const {
             return Iterator(this->findMinimum(this->root));
         }
 
-        Iterator end(){
+        Iterator end() const {
             return Iterator(nullptr);
         }
-        Node* getRoot() {return this->root;}
+        Node* getRoot() const {return this->root;}
 
-    public:
+        Iterator cbegin() const  {
+            return Iterator(nullptr);
+        }
+
+        Iterator cend() const {
+            return Iterator(this->findMaximum(this->root));
+        }
 
         RBTree(const RBTree& other) {           //copy constructor
         }
@@ -261,7 +291,9 @@ class RBTree {
 
         }
 
-        // ~RBTree(){                              //destructor
-        //     this->clear(this->root);
-        // }
+        ~RBTree(){                              //destructor
+            this->clear(this->root);
+            this->root = nullptr;
+            this->count = 0;
+        }
 };

@@ -1,6 +1,5 @@
 #include "Garage.hpp"
 
-// #include "../input/pieces.csv"
 Garage::Garage()
 {
 }
@@ -11,6 +10,7 @@ Garage::~Garage()
     delete this->glidersT;
     delete this->vehiclesT;
     delete this->driversT;
+    delete this->traksT;
 }
 
 void Garage::loadFiles(bool useConsole, std::string filePlayersName, std::string filePartsName)
@@ -58,7 +58,7 @@ void Garage::readPartsFile()
 {
     int qPieces = 0;
     std::string partType;
-    this->vehiclesT = new RBTree<Vehicle *>();
+    this->vehiclesT = new RBTree<Vehicle>();
     for (int category = 0; category < 5; ++category)
     {
         std::getline(this->partsInput, partType, ',');
@@ -114,17 +114,17 @@ void Garage::readVehicleTree(int qVehicles)
         this->partsInput >> baseSpeed;
         this->partsInput.ignore(15, '\n');
 
-        Vehicle *vehicle = new Vehicle(name, aceleration, baseSpeed);
+        Vehicle* vehicle = new Vehicle(name, aceleration, baseSpeed);
         this->vehiclesT->insertNode(vehicle, name);
     }
 }
 
-RBTree<partS> *Garage::readPartTree(int qParts, bool partType)
+RBTree<partS>* Garage::readPartTree(int qParts, bool partType)
 {
-    RBTree<partS> *partT = new RBTree<partS>();
+    RBTree<partS>* partT = new RBTree<partS>();
     for (int iPieces = 0; iPieces < qParts; ++iPieces)
     {
-        partS *part;
+        partS* part;
         std::string name;
         int land, water, air;
 
@@ -145,7 +145,7 @@ RBTree<partS> *Garage::readPartTree(int qParts, bool partType)
         }
 
         this->partsInput.ignore(15, '\n');
-        partT->insertNode(*part, name);
+        partT->insertNode(part, name);
     }
     return partT;
 }
@@ -163,7 +163,7 @@ void Garage::readDriversFile()
 
     this->playerInput.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     std::getline(this->playerInput, line, '\n');
-    this->driversT = new RBTree<Driver *>();
+    this->driversT = new RBTree<Driver>();
     int i = 0;
     while (line.length())
     {
@@ -185,8 +185,8 @@ void Garage::addTrack(std::string line)
     input.ignore(1, ',');
     input >> airDistance;
     input.ignore(15, '\n');
-    traks *trak = new traks(name, landDistance, waterDistance, airDistance);
-    this->traksT->insertNode(*trak, name);
+    traks* trak = new traks(name, landDistance, waterDistance, airDistance);
+    this->traksT->insertNode(trak, name);
 }
 
 void Garage::addDriver(std::string line)
@@ -200,15 +200,15 @@ void Garage::addDriver(std::string line)
     std::getline(input, tires, ',');
     std::getline(input, glider, '\n');
     glider = trim(glider);
-    Driver *driver = this->createDriver(tag, character, vehicle, vehicleType, tires, glider);
+    Driver* driver = this->createDriver(tag, character, vehicle, vehicleType, tires, glider);
     this->driversT->insertNode(driver, tag);
 }
 
-Driver *Garage::createDriver(std::string tag, std::string character, std::string vehicle, std::string vehicleType, std::string tires, std::string &glider)
+Driver* Garage::createDriver(std::string tag, std::string character, std::string vehicle, std::string vehicleType, std::string tires, std::string &glider)
 {
-    Vehicle *vehicleD = *(this->vehiclesT->search(this->vehiclesT->getRoot(), vehicle));
-    partS *tiresD = this->tiresT->search(this->tiresT->getRoot(), tires);
-    partS *gliderD = this->glidersT->search(this->glidersT->getRoot(), glider);
+    Vehicle* vehicleD = this->vehiclesT->search(this->vehiclesT->getRoot(), vehicle);
+    partS* tiresD = this->tiresT->search(this->tiresT->getRoot(), tires);
+    partS* gliderD = this->glidersT->search(this->glidersT->getRoot(), glider);
     
     if (vehicleD && tiresD && gliderD)
     {
@@ -225,7 +225,6 @@ Driver *Garage::createDriver(std::string tag, std::string character, std::string
             return new ATVDriver(tag, character, tiresD, gliderD, vehicleD);
         }
     }
-    // std::cout<< "yes null" << std::endl;
     return new KartDriver(tag, character);
 }
 
@@ -233,10 +232,10 @@ void Garage::findBestCombinatioForAll()
 {
     double minimunTime = std::numeric_limits<double>::max();
     double currentTime = 0;
-    Driver *bestDriver = nullptr;
-    for (typename RBTree<Driver *>::Iterator it = this->driversT->begin(); it != this->driversT->end(); ++it)
+    Driver* bestDriver = nullptr;
+    for (typename RBTree<Driver>::Iterator it = this->driversT->begin(); it != this->driversT->end(); ++it)
     {
-        Driver *driverA = *(it.getValue());
+        Driver* driverA = it.getValue();
         if (!driverA->getValid())
             continue;
         for (typename RBTree<traks>::Iterator it2 = this->traksT->begin(); it2 != this->traksT->end(); ++it2)
@@ -265,20 +264,19 @@ void Garage::showStatsTrack(traks *track)
 {
     double minimunTime = std::numeric_limits<double>::max();
     double currentTime = 0;
-    Driver *bestDriver = nullptr;
-    Driver *actualDriver = nullptr;
+    Driver* bestDriver = nullptr;
+    Driver* currentDriver = nullptr;
     // std::cout << "DistanciaTierra|"<<track->getLandDistance() <<"|Agua|"<< track->getWaterDistance() << "|Distancia Aire" << track->getAirDistance()<< std::endl;
-    for (typename RBTree<Driver *>::Iterator it = this->driversT->begin(); it != this->driversT->end(); ++it)
+    for (typename RBTree<Driver>::Iterator it = this->driversT->begin(); it != this->driversT->end(); ++it)
     {
-        Driver *driverA = *(it.getValue());
-        if (!driverA->getValid())
+        currentDriver = it.getValue();
+        if (!currentDriver->getValid())
             continue;
-        actualDriver = driverA;
-        currentTime = actualDriver->getTime(track->getLandDistance(), track->getWaterDistance(), track->getAirDistance());
+        currentTime = currentDriver->getTime(track->getLandDistance(), track->getWaterDistance(), track->getAirDistance());
         if (currentTime < minimunTime)
         {
             minimunTime = currentTime;
-            bestDriver = driverA;
+            bestDriver = currentDriver;
         }
         currentTime = 0;
     }
@@ -306,9 +304,9 @@ void Garage::findAveragePos(Driver *driverSelected)
         ++pos;
         ++cTraks;
         // std::cout<< "driverTime" << driverTime << std::endl;
-        for (typename RBTree<Driver *>::Iterator itDriver = this->driversT->begin(); itDriver != this->driversT->end(); ++itDriver)
+        for (typename RBTree<Driver>::Iterator itDriver = this->driversT->begin(); itDriver != this->driversT->end(); ++itDriver)
         {
-            Driver *driverA = *(itDriver.getValue());
+            Driver* driverA = itDriver.getValue();
             if (!driverA->getValid())
             {
                 break;
@@ -331,9 +329,9 @@ void Garage::findBestCombinatioForCup(traks **cup)
     double minimunTime = std::numeric_limits<double>::max();
     double currentTime = 0;
     Driver *bestDriver = nullptr;
-    for (typename RBTree<Driver *>::Iterator it = this->driversT->begin(); it != this->driversT->end(); ++it)
+    for (typename RBTree<Driver>::Iterator it = this->driversT->begin(); it != this->driversT->end(); ++it)
     {
-        Driver *driverA = *(it.getValue());
+        Driver* driverA = it.getValue();
         if (!driverA->getValid())
         {
             continue;

@@ -24,6 +24,8 @@ class Driver {
         
         Driver(std::string tag, std::string personage, partS* tiresD, partS* gliderD, Vehicle* VehicleD);
 
+        virtual ~Driver();
+
         virtual double get_time_land (int distancia) =0;
         virtual double get_time_air (int distancia) =0;
         double get_time_water (int distancia);

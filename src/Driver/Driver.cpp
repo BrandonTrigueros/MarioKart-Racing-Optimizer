@@ -11,6 +11,12 @@ Driver::Driver(std::string tag, std::string personage, partS* tiresD, partS* gli
     , VehicleD(VehicleD), valid(true)
     {}
 
+Driver::~Driver(){
+    this->tiresD = nullptr;
+    this->gliderD = nullptr;
+    this->VehicleD = nullptr;
+}
+
 double Driver::get_time_water (int distancia) {
     if (distancia == 0) return 0;
     return ((0.7 * distancia) * this->VehicleD->getBaseSpeed()

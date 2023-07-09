@@ -14,10 +14,10 @@ class Garage
 private:
     RBTree<partS> *tiresT;
     RBTree<partS> *glidersT;
-    RBTree<Vehicle*> *vehiclesT;
-
+    RBTree<Vehicle> *vehiclesT;        //Tree of pointers to vehicles because vehicle is an abstract class
     RBTree<traks> *traksT;
-    RBTree<Driver*> *driversT;
+    RBTree<Driver> *driversT;
+
     std::ifstream playerInput;
     std::ifstream partsInput;
 
@@ -26,8 +26,6 @@ public:
     ~Garage();
 
     void loadFiles(bool useConsole, std::string filePlayersName, std::string filePartsName);
-
-
 
 public:
     void readPartsFile();
@@ -60,11 +58,10 @@ public:
 
     std::string rtrim(const std::string &str);
 
-    //getters
 public:
-    inline RBTree<partS> *getTiresT() { return this->tiresT; }
-    inline RBTree<partS> *getGlidersT() { return this->glidersT; }
-    inline RBTree<Vehicle*> *getVehiclesT() { return this->vehiclesT; }
-    inline RBTree<traks> *getTraksT() { return this->traksT; }
-    inline RBTree<Driver*> *getDriversT() { return this->driversT; }
+    inline RBTree<partS>* getTiresT() { return this->tiresT; }
+    inline RBTree<partS>* getGlidersT() { return this->glidersT; }
+    inline RBTree<Vehicle>* getVehiclesT() { return this->vehiclesT; }
+    inline RBTree<traks>* getTraksT() { return this->traksT; }
+    inline RBTree<Driver>* getDriversT() { return this->driversT; }
 };

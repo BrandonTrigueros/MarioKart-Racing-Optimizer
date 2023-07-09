@@ -24,6 +24,8 @@ class partS {
             , water (landWaterDrag)
             , air (airVelocity)
         {}
+
+        ~partS() = default;
         
         inline std::string getName() const {return this->name;}
         inline int getLand() const {return this->land;}
