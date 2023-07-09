@@ -134,7 +134,7 @@ class RBTree {
         }
         
         Type* searchPerNumber (int number){
-            int counter = 0;
+            int counter = 1;
             for (Iterator it = this->begin(); it != this->end(); ++it){
                 // std::cout << conter << ": "<< it.getKey() << std::endl;
                 if (counter == number)
@@ -157,9 +157,9 @@ class RBTree {
 
     //     }
 
-        void clear(Node* node){
+        // void clear(Node* node){
             
-        }
+        // }
 
         static Node* findMinimum(Node* subtree) {
             if (subtree) {
@@ -256,7 +256,7 @@ class RBTree {
 
         }
 
-        ~RBTree(){                              //destructor
-            this->clear(this->root);
-        }
+        // ~RBTree(){                              //destructor
+        //     this->clear(this->root);
+        // }
 };

@@ -17,7 +17,7 @@ private:
     RBTree<Vehicle> *vehiclesT;
 
     RBTree<traks> *traksT;
-    RBTree<Driver> *driversT;
+    RBTree<Driver*> *driversT;
     std::ifstream playerInput;
     std::ifstream partsInput;
 

@@ -7,9 +7,11 @@ class ATVDriver final : public Driver {
     public:
         ATVDriver(std::string tag, std::string personaje, partS* tiresD, partS* gliderD, Vehicle* vehicleD);
         
-        virtual double get_time_land (int distancia);
+        double get_time_land (int distancia) override;
         
-        virtual double get_time_air (int distancia);
+        double get_time_air (int distancia) override;
 
         inline Vehicle* getATV() const {return this->VehicleD;}
+
+        double getTime(int landDis, int waterDis, int airDis);
 };

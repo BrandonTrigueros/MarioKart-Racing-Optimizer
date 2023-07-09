@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <iostream>
 
 class Vehicle {
     private:
@@ -19,5 +20,5 @@ class Vehicle {
         }
         inline std::string getName() const {return this->name;} 
         inline double getAceleration() const {return this->aceleration;} 
-        inline int getBaseSpeed() const {return this->baseSpeed;} 
+        inline int getBaseSpeed() const {return this->baseSpeed;}
 };
