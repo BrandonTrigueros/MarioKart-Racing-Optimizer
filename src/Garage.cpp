@@ -1,4 +1,5 @@
 #include "Garage.hpp"
+
 // #include "../input/pieces.csv"
 Garage::Garage()
 {
@@ -76,16 +77,22 @@ void Garage::runMenu(IOHandler *ioHandler)
         case 3:
             option2 = ioHandler->tracksSubMenu(this->traksT);
             trackSelected = this->traksT->searchPerNumber(option2);
-            std::cout << "Encontrando la mejor combinacion para pista # " << option2 << ":\n\t" << trackSelected->getName() 
-                << std::endl;
+            // std::cout << "Encontrando la mejor combinacion para pista # " << option2 << ":\n\t" << trackSelected->getName() 
+            //     << std::endl;
             this->showStatsTrack(trackSelected);
             break;
         case 4:
             option2 = ioHandler->playerSubMenu(this->driversT);
             driverSelected = this->driversT->searchPerNumber(option2);
-            std::cout << "Encontrando la mejor combinacion para piloto # " << option2 << ":\n\t" << driverSelected->getTag() 
-                << std::endl;
-            //this->findAveragePos(driverSelected);
+            if(driverSelected->getValid()){
+
+                std::cout << "Encontrando la mejor combinacion para piloto # " << option2 << ":\n\t" << driverSelected->getTag() 
+                    << std::endl;
+                this->findAveragePos(driverSelected);
+            } else {
+                std::cout << "El piloto: " << driverSelected->getTag() << " no tiene una combinacion valida\n" << std::endl;
+
+            }
             break;
         case 5:
             for (int i = 0; i < 4; i++)
@@ -95,7 +102,7 @@ void Garage::runMenu(IOHandler *ioHandler)
             }
             std::cout << "Encontrando la mejor combinacion para copa:\n\t" 
                 << std::endl;
-            //this->findBestCombinatioForCup(tracksSelected);
+            //this->findBestCombinatioForCup(cup);
             break;
         case 6:
             std::cout << "Saliendo del programa" << std::endl;
@@ -241,7 +248,7 @@ void Garage::readDriversFile()
     this->playerInput.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     std::getline(this->playerInput, line, '\n');
     // std::cout << "---------------------------------";
-    this->driversT = new RBTree<Driver>();
+    this->driversT = new RBTree<Driver*>();
     int i = 0;
     while (line.length())
     {
@@ -282,7 +289,7 @@ void Garage::addDriver(std::string line)
     std::getline(input, glider, '\n');
     glider = trim(glider);
     Driver *driver = this->createDriver(tag, character, vehicle, vehicleType, tires, glider);
-    this->driversT->insertNode(*driver, tag);
+    this->driversT->insertNode(driver, tag);
 }
 
 Driver *Garage::createDriver(std::string tag, std::string character, std::string vehicle, std::string vehicleType, std::string tires, std::string &glider)
@@ -315,14 +322,17 @@ Driver *Garage::createDriver(std::string tag, std::string character, std::string
     return new Driver(tag, character);
 }
 
-void Garage::findBestCombinatioForAll()     // Mejor combinacion para todas las pistas
+void Garage::findBestCombinatioForAll()
 {
-    double minimunTime = 0;
+    double minimunTime = std::numeric_limits<double>::max();
     double currentTime = 0;
     Driver* bestDriver = nullptr;
     for (typename RBTree<Driver>::Iterator it = this->driversT->begin(); it != this->driversT->end(); ++it) {
+        if(!it.getValue()->getValid()) 
+            continue;
         for (typename RBTree<traks>::Iterator it2 = this->traksT->begin(); it2 != this->traksT->end(); ++it2) {
             currentTime += it.getValue()->getTime(it2.getValue()->getLandDistance(), it2.getValue()->getWaterDistance(), it2.getValue()->getAirDistance());
+            //std::cout << currentTime <<std::endl;
         }
         if (currentTime < minimunTime) {
             minimunTime = currentTime;
@@ -330,40 +340,68 @@ void Garage::findBestCombinatioForAll()     // Mejor combinacion para todas las 
         }
         currentTime = 0;
     }
-    std::cout << "La mejor combinación para todas las pistas es la del jugador: " << bestDriver->getTag()
-                << " con un tiempo de: " << minimunTime
-                << "Automovil: " << bestDriver->getVehicle()->getName() << "/n"
-                << "Ruedas: " << bestDriver->getTires()->getName() << "/n"
-                << "Planeador: " << bestDriver->getGlider()->getName() << std::endl;
+    if (bestDriver != nullptr ){
+        std::cout << "La mejor combinación para todas las pistas es la del jugador " << bestDriver->getTag()
+                    << " con un tiempo de " << minimunTime / 60.0 << " minutos" << std::endl
+                    << "Automovil: " << bestDriver->getVehicle()->getName() << "\n"
+                    << "Ruedas: " << bestDriver->getTires()->getName() << "\n"
+                    << "Planeador: " << bestDriver->getGlider()->getName() << std::endl;
+    }
 }
 
-void Garage::showStatsTrack(traks* track)   // Mejor combinacion para una pista
+void Garage::showStatsTrack(traks* track)
 {
-    double minimunTime = 0;
+    double minimunTime = std::numeric_limits<double>::max();
     double currentTime = 0;
     Driver* bestDriver = nullptr;
+    Driver* actualDriver = nullptr;
+    std::cout << "DistanciaTierra|"<<track->getLandDistance() <<"|Agua|"<< track->getWaterDistance() << "|Distancia Aire" << track->getAirDistance()<< std::endl;
     for (typename RBTree<Driver>::Iterator it = this->driversT->begin(); it != this->driversT->end(); ++it) {
-        currentTime += it.getValue()->getTime(track->getLandDistance(), track->getWaterDistance(), track->getAirDistance());
+        if(!it.getValue()->getValid()) 
+            continue;
+        actualDriver = it.getValue();
+        currentTime = actualDriver->getTime(track->getLandDistance(), track->getWaterDistance(), track->getAirDistance());
         if (currentTime < minimunTime) {
             minimunTime = currentTime;
             bestDriver = it.getValue();
         }
         currentTime = 0;
     }
-    std::cout << "La mejor combinación para la pista: " << track->getName() << " es la del jugador: " << bestDriver->getTag()
-                << " con un tiempo de: " << minimunTime
-                << "Automovil: " << bestDriver->getVehicle()->getName() << "/n"
-                << "Ruedas: " << bestDriver->getTires()->getName() << "/n"
-                << "Planeador: " << bestDriver->getGlider()->getName() << std::endl;
+    
+    if (bestDriver != nullptr ){
+        std::cout << "La mejor combinación para la pista " << track->getName() << " es la del jugador " << bestDriver->getTag()
+                    << " con un tiempo de " << minimunTime << " segundos" << std::endl
+                    << "Automovil: " << bestDriver->getVehicle()->getName() << "\n"
+                    << "Ruedas: " << bestDriver->getTires()->getName() << "\n"
+                    << "Planeador: " << bestDriver->getGlider()->getName() << std::endl;
+    }
 }
 
-void Garage::findAveragePos(Driver* driverSelected) {   //Pos promedio de un jugador para todas las pistas
-    // Para cada pista encontrar la tabla de posiciones
-    // Para cada posicion en la tabla de posiciones encontrar la posicion del jugador\
-    // Sumar las posiciones y dividir entre el numero de pistas
+void Garage::findAveragePos(Driver* driverSelected) {
+    double pos = 0;
+    double cTraks =0;
+    for (typename RBTree<traks>::Iterator itTrak = this->traksT->begin(); itTrak != this->traksT->end(); ++itTrak) {
+        int landM = itTrak.getValue()->getLandDistance();
+        int waterM = itTrak.getValue()->getWaterDistance();
+        int airM = itTrak.getValue()->getAirDistance();
+        double driverTime = driverSelected->getTime(landM, waterM, airM);
+        ++pos;
+        ++cTraks;
+        for (typename RBTree<Driver>::Iterator itDriver = this->driversT->begin(); itDriver != this->driversT->end(); ++itDriver) {
+            if(itDriver.getValue()->getValid()){
+                break;
+            }
+            double currentTime = itDriver.getValue()->getTime(landM, waterM, airM);
+            if (currentTime < driverTime) {
+                ++pos;
+            }
+        }
+    }
+    pos /= cTraks;
+    std::cout << "La posicion promedio del jugador: " << driverSelected->getTag() << " es: " << pos << std::endl;
 }
 
-void Garage::findBestCombinatioForCup(traks** cup) {    // Mejor combinacion para una copa
+void Garage::findBestCombinatioForCup(traks** cup) {
     double minimunTime = 0;
     double currentTime = 0;
     Driver* bestDriver = nullptr;
