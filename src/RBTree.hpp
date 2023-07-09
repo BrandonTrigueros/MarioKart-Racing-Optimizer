@@ -51,11 +51,15 @@ class RBTree {
 
     private:
         Node* root;
+        int count;
 
     public:
         RBTree () {
             this->root = nullptr;
+            this->count = 0;
         }
+
+        inline int getCount() {return this->count;}
         
         void insertNode(Node* node) {
             if (!this->root) {
@@ -92,6 +96,7 @@ class RBTree {
             node->setColor(BLACK);
             node->setLeft(nullptr);
             node->setRight(nullptr);
+            this->count++;
             //this->fixup (node);
         }
 

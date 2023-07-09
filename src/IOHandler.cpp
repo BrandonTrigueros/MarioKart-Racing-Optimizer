@@ -33,8 +33,13 @@ int IOHandler::menu()
     std::cout << "\t5. Elegir un grupo de 4 pistas para formar una copa y encontrar la mejor combinación de piezas para esta copa" << std::endl;
     std::cout << "\t6. Salir" << std::endl
               << "---->";
+              
     std::cin >> choice;
-    return choice;
+
+
+    if (std::cin.good())
+        return choice;
+    return 7;
 }
 
 int IOHandler::pieceSubMenu()
@@ -47,7 +52,12 @@ int IOHandler::pieceSubMenu()
 
     int choice = 0;
     std::cin >> choice;
-    return choice;
+    if (std::cin.good()) {
+        return choice;
+    }
+    else {
+        return 0;
+    }
 }
 
 int IOHandler::tracksSubMenu(RBTree<traks> *tracks)
@@ -59,7 +69,12 @@ int IOHandler::tracksSubMenu(RBTree<traks> *tracks)
     int choice = 0;
 
     std::cin >> choice;
-    return choice;
+    if (std::cin.good() && choice <= tracks->getCount()) {
+        return choice;
+    }
+    else {
+        return 0;
+    }
 }
 
 int IOHandler::playerSubMenu(RBTree<Driver*> *players)
@@ -71,7 +86,12 @@ int IOHandler::playerSubMenu(RBTree<Driver*> *players)
     int choice = 0;
 
     std::cin >> choice;
-    return choice;
+    if (std::cin.good() && choice <= players->getCount() ) {
+        return choice;
+    }
+    else {
+        return 0;
+    }
 }
 
 int IOHandler::cupSubMenu(RBTree<traks> *tracks, traks** cup)
@@ -91,5 +111,13 @@ int IOHandler::cupSubMenu(RBTree<traks> *tracks, traks** cup)
     }
     std::cout << "---->";
     std::cin >> choice;
-    return choice;
+    if (!std::cin.good()){
+        return -1;
+    }
+    else if (choice <= tracks->getCount()) {
+        return choice;
+    }
+    else {
+        return 0;
+    }
 }

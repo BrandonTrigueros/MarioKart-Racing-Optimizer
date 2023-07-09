@@ -27,9 +27,9 @@ public:
 
     void loadFiles(bool useConsole, std::string filePlayersName, std::string filePartsName);
 
-    void runMenu(IOHandler *ioHandler);
 
-private:
+
+public:
     void readPartsFile();
 
     void readDriversFile();
@@ -59,4 +59,12 @@ private:
     std::string ltrim(const std::string &str);
 
     std::string rtrim(const std::string &str);
+
+    //getters
+public:
+    inline RBTree<partS> *getTiresT() { return this->tiresT; }
+    inline RBTree<partS> *getGlidersT() { return this->glidersT; }
+    inline RBTree<Vehicle*> *getVehiclesT() { return this->vehiclesT; }
+    inline RBTree<traks> *getTraksT() { return this->traksT; }
+    inline RBTree<Driver*> *getDriversT() { return this->driversT; }
 };
