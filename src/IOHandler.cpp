@@ -62,7 +62,7 @@ int IOHandler::tracksSubMenu(RBTree<traks> *tracks)
     return choice;
 }
 
-int IOHandler::playerSubMenu(RBTree<Driver> *players)
+int IOHandler::playerSubMenu(RBTree<Driver*> *players)
 {
     std::cout << "Seleccione un jugador para calcular su posición promedio a lo largo de todas las pistas: \n"
               << std::endl;
@@ -77,26 +77,19 @@ int IOHandler::playerSubMenu(RBTree<Driver> *players)
 int IOHandler::cupSubMenu(RBTree<traks> *tracks, traks** cup)
 {
     int choice = 0;
-    std::cout << "Pistas disponibles para la copa: \n"
+    std::cout << "Pistas disponibles para la copa:"
               << std::endl;
     tracks->printTreeOrder();
-    std::cout << "/n Pistas ya seleccionadas: \n"
+    std::cout << "Pistas ya seleccionadas:"
               << std::endl;
     for (int i = 0; i < 4; i++)
     {
         if (cup[i] != nullptr)
         {
-            std::cout << i + 1 << ". " << cup[i]->getName() << std::endl;
+            std::cout <<"\t"<< i + 1 << ". " << cup[i]->getName() << std::endl;
         }
     }
+    std::cout << "---->";
     std::cin >> choice;
-    for (int i = 0; i < 4; i++)
-    {
-        if (tracks->searchPerNumber(choice - 1) == cup[i])
-        {
-            std::cout << "Pista ya seleccionada, seleccione una pista valida" << std::endl;
-            cupSubMenu(tracks, cup);
-        }
-    }
     return choice;
 }

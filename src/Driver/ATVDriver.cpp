@@ -24,13 +24,3 @@ double ATVDriver::get_time_air (int distancia) {
         - (0.8 * this->gliderD->getAir()));
 }
 
-double ATVDriver::getTime(int landDis, int waterDis, int airDis){
-    if (!this->valid){
-        std::cout << this->tag <<" invalido" <<std::endl;
-        return std::numeric_limits<double>::max();
-    }
-    std::cout << this->tag;
-    std::cout << "   Tiempo Tierra|"<< get_time_land(landDis) <<"|Tiempo Agua|"<< get_time_water(waterDis) << "|Tiempo Aire|" << get_time_air(airDis) << std::endl;
-
-    return this-> get_time_land(landDis) + this->get_time_water(waterDis) + this->get_time_air(airDis);
-}

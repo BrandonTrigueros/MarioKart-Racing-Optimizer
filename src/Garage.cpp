@@ -39,9 +39,9 @@ void Garage::runMenu(IOHandler *ioHandler)
     int option2 = 0;
     traks* trackSelected = nullptr;
     Driver* driverSelected = nullptr;
-    traks* cup [4] = {nullptr, nullptr, nullptr, nullptr};
     while (option != 6) 
     {
+        traks* cup [4] = {nullptr, nullptr, nullptr, nullptr};
         option = ioHandler->menu();
         switch (option)
         {
@@ -83,7 +83,7 @@ void Garage::runMenu(IOHandler *ioHandler)
             break;
         case 4:
             option2 = ioHandler->playerSubMenu(this->driversT);
-            driverSelected = this->driversT->searchPerNumber(option2);
+            driverSelected = *(this->driversT->searchPerNumber(option2));
             if(driverSelected->getValid()){
 
                 std::cout << "Encontrando la mejor combinacion para piloto # " << option2 << ":\n\t" << driverSelected->getTag() 
@@ -102,7 +102,7 @@ void Garage::runMenu(IOHandler *ioHandler)
             }
             std::cout << "Encontrando la mejor combinacion para copa:\n\t" 
                 << std::endl;
-            //this->findBestCombinatioForCup(cup);
+            this->findBestCombinatioForCup(cup);
             break;
         case 6:
             std::cout << "Saliendo del programa" << std::endl;
@@ -139,7 +139,7 @@ void Garage::readPartsFile()
 {
     int qPieces = 0;
     std::string partType;
-    this->vehiclesT = new RBTree<Vehicle>();
+    this->vehiclesT = new RBTree<Vehicle*>();
     for (int category = 0; category < 5; ++category)
     {
         std::getline(this->partsInput, partType, ',');
@@ -197,7 +197,7 @@ void Garage::readVehicleTree(int qVehicles)
         this->partsInput.ignore(15, '\n');
 
         Vehicle *vehicle = new Vehicle(name, aceleration, baseSpeed);
-        this->vehiclesT->insertNode(*vehicle, name);
+        this->vehiclesT->insertNode(vehicle, name);
     }
 }
 
@@ -295,7 +295,7 @@ void Garage::addDriver(std::string line)
 Driver *Garage::createDriver(std::string tag, std::string character, std::string vehicle, std::string vehicleType, std::string tires, std::string &glider)
 {
     // std::cout<< "Buscando--------------" << vehicle<<"--------------"<< std::endl;
-    Vehicle *vehicleD = this->vehiclesT->search(this->vehiclesT->getRoot(), vehicle);
+    Vehicle *vehicleD = *(this->vehiclesT->search(this->vehiclesT->getRoot(), vehicle));
     // std::cout<< "Buscando--------------" << tires <<"--------------"<< std::endl;
     partS *tiresD = this->tiresT->search(this->tiresT->getRoot(), tires);
     // std::cout<< "busco tires"<< std::endl;
@@ -319,7 +319,7 @@ Driver *Garage::createDriver(std::string tag, std::string character, std::string
         }
     }
     // std::cout<< "yes null" << std::endl;
-    return new Driver(tag, character);
+    return new KartDriver(tag, character);
 }
 
 void Garage::findBestCombinatioForAll()
@@ -327,16 +327,17 @@ void Garage::findBestCombinatioForAll()
     double minimunTime = std::numeric_limits<double>::max();
     double currentTime = 0;
     Driver* bestDriver = nullptr;
-    for (typename RBTree<Driver>::Iterator it = this->driversT->begin(); it != this->driversT->end(); ++it) {
-        if(!it.getValue()->getValid()) 
+    for (typename RBTree<Driver*>::Iterator it = this->driversT->begin(); it != this->driversT->end(); ++it) {
+        Driver* driverA = *(it.getValue());
+        if(!driverA->getValid()) 
             continue;
         for (typename RBTree<traks>::Iterator it2 = this->traksT->begin(); it2 != this->traksT->end(); ++it2) {
-            currentTime += it.getValue()->getTime(it2.getValue()->getLandDistance(), it2.getValue()->getWaterDistance(), it2.getValue()->getAirDistance());
+            currentTime += driverA->getTime(it2.getValue()->getLandDistance(), it2.getValue()->getWaterDistance(), it2.getValue()->getAirDistance());
             //std::cout << currentTime <<std::endl;
         }
         if (currentTime < minimunTime) {
             minimunTime = currentTime;
-            bestDriver = it.getValue();
+            bestDriver = driverA;
         }
         currentTime = 0;
     }
@@ -355,15 +356,16 @@ void Garage::showStatsTrack(traks* track)
     double currentTime = 0;
     Driver* bestDriver = nullptr;
     Driver* actualDriver = nullptr;
-    std::cout << "DistanciaTierra|"<<track->getLandDistance() <<"|Agua|"<< track->getWaterDistance() << "|Distancia Aire" << track->getAirDistance()<< std::endl;
-    for (typename RBTree<Driver>::Iterator it = this->driversT->begin(); it != this->driversT->end(); ++it) {
-        if(!it.getValue()->getValid()) 
+    // std::cout << "DistanciaTierra|"<<track->getLandDistance() <<"|Agua|"<< track->getWaterDistance() << "|Distancia Aire" << track->getAirDistance()<< std::endl;
+    for (typename RBTree<Driver*>::Iterator it = this->driversT->begin(); it != this->driversT->end(); ++it) {
+        Driver* driverA = *(it.getValue());
+        if(!driverA->getValid()) 
             continue;
-        actualDriver = it.getValue();
+        actualDriver = driverA;
         currentTime = actualDriver->getTime(track->getLandDistance(), track->getWaterDistance(), track->getAirDistance());
         if (currentTime < minimunTime) {
             minimunTime = currentTime;
-            bestDriver = it.getValue();
+            bestDriver = driverA;
         }
         currentTime = 0;
     }
@@ -387,37 +389,45 @@ void Garage::findAveragePos(Driver* driverSelected) {
         double driverTime = driverSelected->getTime(landM, waterM, airM);
         ++pos;
         ++cTraks;
-        for (typename RBTree<Driver>::Iterator itDriver = this->driversT->begin(); itDriver != this->driversT->end(); ++itDriver) {
-            if(itDriver.getValue()->getValid()){
+        // std::cout<< "driverTime" << driverTime << std::endl;
+        for (typename RBTree<Driver*>::Iterator itDriver = this->driversT->begin(); itDriver != this->driversT->end(); ++itDriver) {
+            Driver* driverA = *(itDriver.getValue());
+            if(!driverA->getValid()){
                 break;
             }
-            double currentTime = itDriver.getValue()->getTime(landM, waterM, airM);
+            double currentTime = driverA->getTime(landM, waterM, airM);
+            // std::cout << "current: " << currentTime <<std::endl;
             if (currentTime < driverTime) {
                 ++pos;
             }
         }
     }
+    // std::cout << pos << " | " << cTraks << std::endl;
     pos /= cTraks;
     std::cout << "La posicion promedio del jugador: " << driverSelected->getTag() << " es: " << pos << std::endl;
 }
 
 void Garage::findBestCombinatioForCup(traks** cup) {
-    double minimunTime = 0;
+    double minimunTime = std::numeric_limits<double>::max();
     double currentTime = 0;
     Driver* bestDriver = nullptr;
-    for (typename RBTree<Driver>::Iterator it = this->driversT->begin(); it != this->driversT->end(); ++it) {
+    for (typename RBTree<Driver*>::Iterator it = this->driversT->begin(); it != this->driversT->end(); ++it) {
+        Driver* driverA = *(it.getValue());
+        if(!driverA->getValid()){
+            continue;
+        }
         for (int i = 0; i < 4; ++i) {
-            currentTime += it.getValue()->getTime(cup[i]->getLandDistance(), cup[i]->getWaterDistance(), cup[i]->getAirDistance());
+            currentTime += driverA->getTime(cup[i]->getLandDistance(), cup[i]->getWaterDistance(), cup[i]->getAirDistance());
         }
         if (currentTime < minimunTime) {
             minimunTime = currentTime;
-            bestDriver = it.getValue();
+            bestDriver = driverA;
         }
         currentTime = 0;
     }
     std::cout << "La mejor combinación para la copa es la del jugador: " << bestDriver->getTag()
-                << " con un tiempo de: " << minimunTime
-                << "Automovil: " << bestDriver->getVehicle()->getName() << "/n"
-                << "Ruedas: " << bestDriver->getTires()->getName() << "/n"
+                << " con un tiempo de: " << minimunTime/60 << " minutos"
+                << "\nVehiculo: " << bestDriver->getVehicle()->getName() << "\n"
+                << "Ruedas: " << bestDriver->getTires()->getName() << "\n"
                 << "Planeador: " << bestDriver->getGlider()->getName() << std::endl;
 }

@@ -14,7 +14,7 @@ class Garage
 private:
     RBTree<partS> *tiresT;
     RBTree<partS> *glidersT;
-    RBTree<Vehicle> *vehiclesT;
+    RBTree<Vehicle*> *vehiclesT;
 
     RBTree<traks> *traksT;
     RBTree<Driver*> *driversT;

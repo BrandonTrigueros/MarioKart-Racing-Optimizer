@@ -12,6 +12,4 @@ class MotorcycleDriver final : public Driver {
         double get_time_air (int distancia) override;
         
         inline Vehicle* getMotorcycle() const {return this->VehicleD;}
-
-        double getTime(int landDis, int waterDis, int airDis) override;
 };

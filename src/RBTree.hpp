@@ -128,7 +128,7 @@ class RBTree {
         void printTreeOrder (){
             int conter = 1;
             for (Iterator it = this->begin(); it != this->end(); ++it){
-                std::cout << conter << ": "<< it.getKey() << std::endl;
+                std::cout << "\t" << conter << ": "<< it.getKey() << std::endl;
                 ++conter;
             }
         }

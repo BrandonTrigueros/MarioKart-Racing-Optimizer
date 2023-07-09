@@ -24,14 +24,11 @@ class Driver {
         
         Driver(std::string tag, std::string personage, partS* tiresD, partS* gliderD, Vehicle* VehicleD);
 
-        virtual double get_time_land (int distancia) {return 0;}
-        virtual double get_time_air (int distancia) {return 0;}
+        virtual double get_time_land (int distancia) =0;
+        virtual double get_time_air (int distancia) =0;
         double get_time_water (int distancia);
 
-        virtual double getTime(int landDis, int waterDis, int airDis) {
-            std::cout << "Invoca get time en padre" << std::endl;
-            return 0;
-        }
+        virtual double getTime(int landDis, int waterDis, int airDis);
         
         inline std::string getTag() const {return this->tag;}
         inline std::string getpersonage() const {return this->personage;}

@@ -12,6 +12,4 @@ class ATVDriver final : public Driver {
         double get_time_air (int distancia) override;
 
         inline Vehicle* getATV() const {return this->VehicleD;}
-
-        double getTime(int landDis, int waterDis, int airDis);
 };

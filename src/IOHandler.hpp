@@ -24,6 +24,6 @@ public:
     int menu();
     int pieceSubMenu();
     int tracksSubMenu(RBTree<traks> *tracks);
-    int playerSubMenu(RBTree<Driver> *players);
+    int playerSubMenu(RBTree<Driver*> *players);
     int cupSubMenu(RBTree<traks> *tracks, traks** tracksSelected);
 };
