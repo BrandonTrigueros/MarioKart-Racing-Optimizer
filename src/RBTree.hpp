@@ -33,24 +33,20 @@ class RBTree {
                 : key(key), value(value), color(color), left(left), right(right), parent(parent)
             {}
 
-            Node (const Node& other) {
+            Node (const Node& other, Node* parent) {
                 this->key = other.key;
                 this->color = other.color;
                 this->value = new Type(*other.value);
+                this->parent = parent;
                 if (other.left) {
-                    this->left = new Node(*other.left);
+                    this->left = new Node(*other.left, this);
                 } else {
                     this->left = nullptr;
                 }
                 if (other.right) {
-                    this->right = new Node(*other.right);
+                    this->right = new Node(*other.right, this);
                 } else {
                     this->right = nullptr;
-                }
-                if (other.parent) {
-                    this->parent = new Node(*other.parent);
-                } else {
-                    this->parent = nullptr;
                 }
             }
 
@@ -118,7 +114,7 @@ class RBTree {
                     }
                 }
             }
-            node->setColor(BLACK);
+            node->setColor(RED);
             node->setLeft(nullptr);
             node->setRight(nullptr);
             this->count++;
@@ -158,6 +154,10 @@ class RBTree {
                 std::cout << "\t" << conter << ": "<< it.getKey() << std::endl;
                 ++conter;
             }
+            if (conter == 1)
+            {
+                std::cout << "Tree is empty" << std::endl;
+            }
         }
         
         Type* searchPerNumber (int number){
@@ -172,17 +172,17 @@ class RBTree {
         }
 
     private:
-        void leftRotate(Node* node){
+        // void leftRotate(Node* node){
 
-        }
+        // }
 
-        void rightRotate(Node* node){
+        // void rightRotate(Node* node){
 
-        }
+        // }
 
-        void fixup(Node* node){
+        // void fixup(Node* node){
 
-        }
+        // }
 
         void clear(Node* node){
             if (node!=nullptr){
@@ -303,26 +303,49 @@ class RBTree {
                 this->count = 0;
             }
             else{
-                this->root = new Node(*(other.root));
+                this->root = new Node(*(other.root), nullptr);
                 this->count = other.count;
             }
         }
 
         RBTree(RBTree&& other){                 //move constructor
-
+            std::cout << "---move contructor---" << std::endl;
+            this->root = other.root;
+            this->count = other.count;
+            other.root = nullptr;
+            other.count = 0;
         }
 
         RBTree& operator=(const RBTree& other){ //copy assignment
-
+            if(this != &other) {
+                if (this->root != nullptr) {
+                    this->clear(this->root);
+                }
+                this->root = new Node(*(other.root), nullptr);
+                this->count = other.count;
+            }
+            return *this;
         }
 
         RBTree& operator=(RBTree&& other){      //move assignment
-
+            // std::cout << "---move assignment---" << std::endl;
+            if(this != &other) {
+                if (this->root != nullptr) {
+                    this->clear(this->root);
+                }
+                this->root = other.root;
+                this->count = other.count;
+                other.root = nullptr;
+                other.count = 0;
+            }
+            return *this;
         }
 
         ~RBTree(){                              //destructor
-            this->clear(this->root);
-            this->root = nullptr;
-            this->count = 0;
+            if (this->root != nullptr) {
+                this->clear(this->root);
+                this->root = nullptr;
+                this->count = 0;
+            }
         }
 };

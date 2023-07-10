@@ -1,7 +1,14 @@
 #include "Garage.hpp"
 
-Garage::Garage()
+Garage::Garage(std::string filePlayersName, std::string filePartsName)
+    : tiresT(nullptr)
+    , glidersT(nullptr)
+    , vehiclesT(nullptr)
+    , traksT(nullptr)
+    , driversT(nullptr)
 {
+    this->playerInput.open(filePlayersName);
+    this->partsInput.open(filePartsName);
 }
 
 Garage::~Garage()
@@ -11,20 +18,16 @@ Garage::~Garage()
     delete this->vehiclesT;
     delete this->driversT;
     delete this->traksT;
+
 }
 
-void Garage::loadFiles(bool useConsole, std::string filePlayersName, std::string filePartsName)
+void Garage::loadFiles(bool useConsole)
 {
-    std::ifstream playerInput;
-    std::ifstream partsInput;
     if (useConsole)
     {
     }
     else
     {
-        this->playerInput.open(filePlayersName);
-        this->partsInput.open(filePartsName);
-
         this->readPartsFile();
         this->readDriversFile();
     }
@@ -356,10 +359,39 @@ void Garage::findBestCombinatioForCup(traks** cup)
 
 void Garage::testR5() {
     std::cout << "Test Copy Constructor" << std::endl;
-    RBTree<partS>* tiresCopy (this->tiresT);
+    RBTree<Driver>* driversCopy = new RBTree<Driver>(*this->driversT);
     std::cout << "Original" << std::endl;
-    this->tiresT->printTreeOrder();
+    this->driversT->printTreeOrder();
     std::cout << "Copy" << std::endl;
-    tiresCopy->printTreeOrder();
-    //delete tiresCopy;
+    driversCopy->printTreeOrder();
+    delete driversCopy;
+
+    std::cout << "Test Move Constructor" << std::endl;
+    RBTree<Driver>* driversMove = new RBTree<Driver>(std::move(*this->driversT));
+    std::cout << "Original" << std::endl; // Should be empty
+    this->driversT->printTreeOrder();
+    std::cout << "Move" << std::endl;
+    driversMove->printTreeOrder();
+    delete this->driversT;
+    this->driversT = driversMove;
+
+    std::cout << "Test Assignment Operator" << std::endl;
+    RBTree<partS>* newTires = new RBTree<partS>(*this->tiresT);
+    std::cout << "New tires tree" << std::endl;
+    newTires->printTreeOrder();
+    *newTires = *this->glidersT;
+    std::cout << "newTires tree after asigning gliders to it" << std::endl;
+    newTires->printTreeOrder();
+    delete newTires;
+
+    std::cout << "Test Movement Assignment Operator" << std::endl;
+    RBTree<partS>* tiresMove = new RBTree<partS>(*this->tiresT);
+    std::cout << "New tires tree" << std::endl;
+    tiresMove->printTreeOrder();
+    *tiresMove = std::move(*this->glidersT);
+    std::cout << "tiresMove tree after move asign gliders tree to it" << std::endl;
+    tiresMove->printTreeOrder();
+    std::cout << "gliders tree after move asign" << std::endl;
+    this->glidersT->printTreeOrder();   // Should be empty
+    delete tiresMove;
 }

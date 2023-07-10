@@ -26,8 +26,8 @@ class Driver {
 
         virtual ~Driver();
 
-        virtual double get_time_land (int distancia) =0;
-        virtual double get_time_air (int distancia) =0;
+        virtual double get_time_land (int distancia) {return distancia - distancia;}
+        virtual double get_time_air (int distancia) {return distancia - distancia;}
         double get_time_water (int distancia);
 
         virtual double getTime(int landDis, int waterDis, int airDis);

@@ -8,6 +8,7 @@
 #include <fstream>
 #include <limits>
 #include <sstream>
+#include <string>
 
 class Garage
 {
@@ -22,10 +23,10 @@ private:
     std::ifstream partsInput;
 
 public:
-    Garage();
+    Garage(std::string filePlayersName, std::string filePartsName);
     ~Garage();
 
-    void loadFiles(bool useConsole, std::string filePlayersName, std::string filePartsName);
+    void loadFiles(bool useConsole);
 
 public:
     void testR5();
