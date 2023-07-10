@@ -10,7 +10,7 @@ int main(int argc, char *argv[])
     Garage *garage = new Garage(ioHandler->getPlayersFileName(), ioHandler->getPartsFileName());
     Menu *menu = new Menu();
     garage->loadFiles(ioHandler->getUseConsole());
-    garage->testR5();
+    //garage->testR5();
     menu->run(garage, ioHandler);
     delete ioHandler;
     delete garage;

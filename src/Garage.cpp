@@ -381,12 +381,14 @@ void Garage::testR5()
 
     std::cout << "Test Movement Assignment Operator" << std::endl;
     RBTree<partS> *tiresMove = new RBTree<partS>(*this->tiresT);
+    RBTree<partS> *glidersCopy = new RBTree<partS>(*this->glidersT);
     std::cout << "New tires tree" << std::endl;
     tiresMove->printTreeOrder();
-    *tiresMove = std::move(*this->glidersT);
+    *tiresMove = std::move(*glidersCopy);
     std::cout << "tiresMove tree after move asign gliders tree to it" << std::endl;
     tiresMove->printTreeOrder();
     std::cout << "gliders tree after move asign" << std::endl;
-    this->glidersT->printTreeOrder(); // Should be empty
+    glidersCopy->printTreeOrder();  // Should be empty
     delete tiresMove;
+    delete glidersCopy;
 }

@@ -32,6 +32,10 @@ class partS {
             , air (other.air)
         {}
 
+        inline bool operator==(const partS& other) const {
+            return (this->name == other.name && this->land == other.land && this->water == other.water && this->air == other.air);
+        }
+
         ~partS() = default;
         
         inline std::string getName() const {return this->name;}

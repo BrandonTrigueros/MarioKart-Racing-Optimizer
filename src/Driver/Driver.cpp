@@ -19,7 +19,7 @@ Driver::~Driver(){
 
 double Driver::get_time_water (int distancia) {
     if (distancia == 0) return 0;
-    return ((0.7 * distancia) * this->VehicleD->getBaseSpeed()
+    return (((0.7 * distancia) * this->VehicleD->getBaseSpeed())
     + this->VehicleD->getBaseSpeed()
     + (1.2 * this->tiresD->getWater())
     - (0.7 * this->gliderD->getWater()));
