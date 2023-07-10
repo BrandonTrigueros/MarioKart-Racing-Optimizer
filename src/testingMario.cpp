@@ -12,10 +12,6 @@
 // {
 //     KartDriver kartDriver("Prueba1", "PersonajePrueba");
 //     EXPECT_EQ (kartDriver.getTime(100 , 100 , 100), 0);
-//     ATVDriver kartDriver("Prueba1", "PersonajePrueba");
-//     EXPECT_EQ (kartDriver.getTime(100 , 100 , 100), 0);
-//     KartDriver kartDriver("Prueba1", "PersonajePrueba");
-//     EXPECT_EQ (kartDriver.getTime(100 , 100 , 100), 0);
 // }
 
 // class testingMario : public ::testing::Test
