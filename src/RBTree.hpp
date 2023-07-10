@@ -478,7 +478,7 @@ public:
 
     RBTree(RBTree &&other)
     { // move constructor
-        std::cout << "---move contructor---" << std::endl;
+        //std::cout << "---move contructor---" << std::endl;
         this->root = other.root;
         this->count = other.count;
         other.root = nullptr;
