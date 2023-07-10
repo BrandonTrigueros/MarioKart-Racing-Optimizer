@@ -21,5 +21,5 @@ double KartDriver::get_time_air(int distancia)
 {
     if (distancia == 0)
         return 0;
-    return ((0.5 * distancia) * this->VehicleD->getAceleration() + this->VehicleD->getBaseSpeed() - (0.9 * this->tiresD->getAir()) + (0.7 * this->gliderD->getAir()));
+    return (((0.5 * distancia) * (this->VehicleD->getAceleration() + this->VehicleD->getBaseSpeed())) - (0.9 * this->tiresD->getAir()) + (0.7 * this->gliderD->getAir()));
 }
