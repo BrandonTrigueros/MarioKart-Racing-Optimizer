@@ -183,7 +183,7 @@ public:
         int conter = 1;
         for (Iterator it = this->begin(); it != this->end(); ++it)
         {
-            std::cout << "\t" << conter << ": " << it.getKey() << " es de color:" << it.getColor() << std::endl;
+            std::cout << "\t" << conter << ": " << it.getKey() << std::endl;
             ++conter;
         }
         if (conter == 1)

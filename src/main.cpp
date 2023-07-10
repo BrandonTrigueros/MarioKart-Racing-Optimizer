@@ -3,6 +3,7 @@
 #include "Menu.hpp"
 
 #include <iostream>
+
 int main(int argc, char *argv[])
 {
     IOHandler *ioHandler = new IOHandler(argc, argv);
@@ -10,7 +11,7 @@ int main(int argc, char *argv[])
     Menu *menu = new Menu();
     garage->loadFiles(ioHandler->getUseConsole());
     garage->testR5();
-    // menu->run(garage, ioHandler);
+    menu->run(garage, ioHandler);
     delete ioHandler;
     delete garage;
     delete menu;

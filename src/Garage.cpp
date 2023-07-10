@@ -239,7 +239,6 @@ void Garage::findBestCombinatioForAll()
         for (typename RBTree<traks>::Iterator it2 = this->traksT->begin(); it2 != this->traksT->end(); ++it2)
         {
             currentTime += driverA->getTime(it2.getValue()->getLandDistance(), it2.getValue()->getWaterDistance(), it2.getValue()->getAirDistance());
-            // std::cout << currentTime <<std::endl;
         }
         if (currentTime < minimunTime)
         {

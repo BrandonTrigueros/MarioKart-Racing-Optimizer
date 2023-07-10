@@ -1,93 +1,107 @@
-// #include <gtest/gtest.h>
-// #include "Garage.hpp"
-// #include "IOHandler.hpp"
-// #include "Driver/Driver.hpp"
-// #include "Driver/KartDriver.hpp"
-// #include "Driver/ATVDriver.hpp"
-// #include "Driver/MotorcycleDriver.hpp"
-// using namespace testing;
+#include <gtest/gtest.h>
+#include "Driver/Driver.hpp"
+#include "Driver/KartDriver.hpp"
+#include "Driver/ATVDriver.hpp"
+#include "Driver/MotorcycleDriver.hpp"
+#include "Parts/Vehicle.hpp"
+#include "Parts/PartS.hpp"
 
 
-// TEST(TestInvalidDrivers, GetTimeTest)
+using namespace testing;
+
+TEST(TestingMario, CeroToCero)
+{
+    EXPECT_EQ (0, 0);
+}
+
+TEST(TestingMario, Testrueda)
+{
+    partS rueda("Rueda1", 15, 16, 17);
+    EXPECT_EQ (rueda.getLand(), 15);
+}
+
+TEST(TestingMario, Testglider)
+{
+    partS glider("Glider1", 15, 17);
+    EXPECT_EQ (glider.getAir(), 17);
+}
+
+TEST(TestingMario, Testvehicle)
+{
+    Vehicle vehicle("vehicle1", 15, 17);
+    EXPECT_EQ (vehicle.getBaseSpeed(), 17);
+}
+
+// TEST(TestingMario, TestValidDriver)
 // {
-//     KartDriver kartDriver("Prueba1", "PersonajePrueba");
-//     EXPECT_EQ (kartDriver.getTime(100 , 100 , 100), 0);
+//     partS* rueda = new partS("Rueda1", 15, 16, 17);
+//     partS* glider = new partS("Glider1", 15, 17);
+//     Vehicle* vehicle= new Vehicle("vehicle1", 15, 17);
+//     KartDriver driver ("Driver1", "PersonajePrueba", rueda, glider, vehicle);
+//     EXPECT_EQ (driver.getTag(), "Driver1");
 // }
 
-// class testingMario : public ::testing::Test
-// {
-// protected:
-//     Garage garage;
-// //    IOHandler IOHandler;
+int main(int argc, char *argv[])
+{
+    ::testing::InitGoogleTest(&argc, argv);
+    return RUN_ALL_TESTS();
+}
+//TEST_F (testingMario, calculaKartTimeAir){
+//    Driver* kartDriver = garage->getDriversT()->searchPerNumber(12);
+//    double time = 233.1;
+//    ASSERT_EQ(kartDriver->get_time_air(200), time);
+//}
+//TEST_F (testingMario, calculabikeTimeAir){
+//    Driver* bikeDriver = garage->getDriversT()->searchPerNumber(8);
+//    double time = 512.7892;
+//    ASSERT_EQ(bikeDriver->get_time_air(200), time);
+//}
 
-// protected:
-//     void SetUp() override {
-//         garage.loadFiles(false, "input/players.csv", "input/parts.csv");
-//     }
-// };
+//TEST_F (testingMario, calculaATVTimeland){
+//    Driver* atvDriver = garage->getDriversT()->searchPerNumber(1);
+//    double time = 451.1;
+//    ASSERT_EQ(atvDriver->get_time_land(200), time);
+//}
 
-// TEST_F (testingMario, calculaATVTimeAir){
-//     Driver* atvDriver = testingMario.garage.getDriversT()->searchPerNumber(1);
-//     double time = 451.1;
-//     ASSERT_TRUE(atvDriver->get_time_air(200), time);
-// }
+//TEST_F (testingMario, calculaKartTimeland){
+//    Driver* kartDriver = garage->getDriversT()->searchPerNumber(12);
+//    double time = 233.1;
+//    ASSERT_EQ(kartDriver->get_time_land(200), time);
+//}
+//TEST_F (testingMario, calculabikeTimeland){
+//    Driver* bikeDriver = garage->getDriversT()->searchPerNumber(8);
+//    double time = 112.5;
+//    ASSERT_EQ(bikeDriver->get_time_land(200), time);
+//}
+//TEST_F (testingMario, calculaATVTimewater){
+//    Driver* atvDriver = garage->getDriversT()->searchPerNumber(1);
+//    double time = 751.1;
+//    ASSERT_EQ(atvDriver->get_time_water(200), time);
+//}
 
-// TEST_F (testingMario, calculaKartTimeAir){
-//     Driver* kartDriver = testingMario->garage.getDriversT()->searchPerNumber(12);
-//     double time = 233.1;
-//     ASSERT_TRUE(kartDriver->get_time_air(200), time);
-// }
-// TEST_F (testingMario, calculabikeTimeAir){
-//     Driver* bikeDriver = testingMario->garage.getDriversT()->searchPerNumber(8);
-//     double time = 512.7892;
-//     ASSERT_TRUE(bikeDriver->get_time_air(200), time);
-// }
-
-// TEST_F (testingMario, calculaATVTimeland){
-//     Driver* atvDriver = testingMario->garage.getDriversT()->searchPerNumber(1);
-//     double time = 451.1;
-//     ASSERT_TRUE(atvDriver->get_time_land(200), time);
-// }
-
-// TEST_F (testingMario, calculaKartTimeland){
-//     Driver* kartDriver = testingMario->garage.getDriversT()->searchPerNumber(12);
-//     double time = 233.1;
-//     ASSERT_TRUE(kartDriver->get_time_land(200), time);
-// }
-// TEST_F (testingMario, calculabikeTimeland){
-//     Driver* bikeDriver = testingMario->garage.getDriversT()->searchPerNumber(8);
-//     double time = 112.5;
-//     ASSERT_TRUE(bikeDriver->get_time_land(200), time);
-// }
-// TEST_F (testingMario, calculaATVTimewater){
-//     Driver* atvDriver = testingMario->garage.getDriversT()->searchPerNumber(1);
-//     double time = 751.1;
-//     ASSERT_TRUE(atvDriver->get_time_water(200), time);
-// }
-
-// TEST_F (testingMario, calculaKartTimewater){
-//     Driver* kartDriver = testingMario->garage.getDriversT()->searchPerNumber(12);
-//     double time = 833.1;
-//     ASSERT_TRUE(kartDriver->get_time_water(200), time);
-// }
-// TEST_F (testingMario, calculabikeTimewater){
-//     Driver* bikeDriver = testingMario.garage.getDriversT()->searchPerNumber(8);
-//     double time = 1112.5;
-//     ASSERT_TRUE(bikeDriver->get_time_water(200), time);
-// }
+//TEST_F (testingMario, calculaKartTimewater){
+//    Driver* kartDriver = garage->getDriversT()->searchPerNumber(12);
+//    double time = 833.1;
+//    ASSERT_EQ(kartDriver->get_time_water(200), time);
+//}
+//TEST_F (testingMario, calculabikeTimewater){
+//    Driver* bikeDriver = garage->getDriversT()->searchPerNumber(8);
+//    double time = 1112.5;
+//    ASSERT_EQ(bikeDriver->get_time_water(200), time);
+//}
 
 
-// TEST_F (testingMario, testSearchVehicleT){
-//     ASSERT_FALSE (testingMario->garage.getVehiclesT(), nullptr);
-// }
+//TEST_F (testingMario, testSearchVehicleT){
+//    ASSERT_NE (garage->getVehiclesT(), nullptr);
+//}
 
-// TEST_F (testingMario, testSearchTiresT){
-//     ASSERT_FALSE (testingMario->garage.getTiresT(), nullptr);
-// }
+//TEST_F (testingMario, testSearchTiresT){
+//    ASSERT_NE (garage->getTiresT(), nullptr);
+//}
 
-// TEST_F (testingMario, testSearchGlidersT){
-//     ASSERT_FALSE (testingMario->garage.getGlidersT(), nullptr);
-// }
+//TEST_F (testingMario, testSearchGlidersT){
+//    ASSERT_NE (garage->getGlidersT(), nullptr);
+//}
 
 
 
