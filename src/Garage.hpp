@@ -28,6 +28,8 @@ public:
     void loadFiles(bool useConsole, std::string filePlayersName, std::string filePartsName);
 
 public:
+    void testR5();
+    
     void readPartsFile();
 
     void readDriversFile();

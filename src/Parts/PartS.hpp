@@ -25,6 +25,13 @@ class partS {
             , air (airVelocity)
         {}
 
+        partS(const partS& other)
+            : name (other.name)
+            , land (other.land)
+            , water (other.water)
+            , air (other.air)
+        {}
+
         ~partS() = default;
         
         inline std::string getName() const {return this->name;}

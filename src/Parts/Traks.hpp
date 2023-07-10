@@ -18,6 +18,15 @@ class traks{
 
         }
 
+        traks(const traks& other)
+            : name (other.name)
+            , landDistance (other.landDistance)
+            , waterDistance (other.waterDistance)
+            , airDistance (other.airDistance)
+        {
+
+        }
+
         ~traks() = default;
         
         inline std::string getName() const {return this->name;}

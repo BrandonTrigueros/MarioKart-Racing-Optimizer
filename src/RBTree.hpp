@@ -33,6 +33,27 @@ class RBTree {
                 : key(key), value(value), color(color), left(left), right(right), parent(parent)
             {}
 
+            Node (const Node& other) {
+                this->key = other.key;
+                this->color = other.color;
+                this->value = new Type(*other.value);
+                if (other.left) {
+                    this->left = new Node(*other.left);
+                } else {
+                    this->left = nullptr;
+                }
+                if (other.right) {
+                    this->right = new Node(*other.right);
+                } else {
+                    this->right = nullptr;
+                }
+                if (other.parent) {
+                    this->parent = new Node(*other.parent);
+                } else {
+                    this->parent = nullptr;
+                }
+            }
+
             ~Node() {
                 delete this->value;
             }
@@ -277,6 +298,14 @@ class RBTree {
         }
 
         RBTree(const RBTree& other) {           //copy constructor
+            if (other.root == nullptr){
+                this->root = nullptr;
+                this->count = 0;
+            }
+            else{
+                this->root = new Node(*(other.root));
+                this->count = other.count;
+            }
         }
 
         RBTree(RBTree&& other){                 //move constructor

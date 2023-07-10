@@ -15,9 +15,13 @@ class Vehicle {
             : name (name)
             , aceleration (aceleration)
             , baseSpeed (baseSpeed)
-        {
+        {}
 
-        }
+        Vehicle (const Vehicle& other)
+            : name (other.name)
+            , aceleration (other.aceleration)
+            , baseSpeed (other.baseSpeed)
+        {}
 
         ~Vehicle() = default;
         inline std::string getName() const {return this->name;} 

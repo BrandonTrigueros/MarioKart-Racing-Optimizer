@@ -324,7 +324,7 @@ void Garage::findAveragePos(Driver *driverSelected)
     std::cout << "La posicion promedio del jugador: " << driverSelected->getTag() << " es: " << pos << std::endl;
 }
 
-void Garage::findBestCombinatioForCup(traks **cup)
+void Garage::findBestCombinatioForCup(traks** cup)
 {
     double minimunTime = std::numeric_limits<double>::max();
     double currentTime = 0;
@@ -352,4 +352,14 @@ void Garage::findBestCombinatioForCup(traks **cup)
               << "\nVehiculo: " << bestDriver->getVehicle()->getName() << "\n"
               << "Ruedas: " << bestDriver->getTires()->getName() << "\n"
               << "Planeador: " << bestDriver->getGlider()->getName() << std::endl;
+}
+
+void Garage::testR5() {
+    std::cout << "Test Copy Constructor" << std::endl;
+    RBTree<partS>* tiresCopy (this->tiresT);
+    std::cout << "Original" << std::endl;
+    this->tiresT->printTreeOrder();
+    std::cout << "Copy" << std::endl;
+    tiresCopy->printTreeOrder();
+    //delete tiresCopy;
 }
